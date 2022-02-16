@@ -18,13 +18,6 @@ SELECT
     -- Applicant Acquisition Coordinator
     (select name FROM people p WHERE o.applicant_coordinator_person_id=p.id) as 'Applicant Acquisition Coordinator',
     -- Commited date
-    (select (case 
-              when type = 'commit' and value is True then 'True'
-              when type = 'commit' and value is False then 'False'
-            end)
-     FROM opportunity_changes_history och 
-     WHERE type in (select type from opportunity_changes_history where type = 'commit')
-     group by opportunity_id ) as 'Commited',
     -- Status
     o.status as 'Status',
     -- Completed applications
@@ -67,7 +60,6 @@ SELECT
 FROM opportunities o 
 LEFT JOIN opportunity_candidates oc on o.id=oc.opportunity_id
 left join opportunity_columns oc2 on oc.column_id = oc2.id
-left join opportunity_changes_history och on o.id = och.opportunity_id
 left join (
   select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
   from member_evaluations me
