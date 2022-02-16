@@ -18,7 +18,13 @@ SELECT
     -- Applicant Acquisition Coordinator
     (select name FROM people p WHERE o.applicant_coordinator_person_id=p.id) as 'Applicant Acquisition Coordinator',
     -- Commited date
-    (select DATE(och.created) FROM opportunity_changes_history och WHERE och.opportunity_id = o.id group by opportunity_id ) as 'Commited date',
+    (select (case 
+              when type = 'commit' and value is True then 'True'
+              when type = 'commit' and value is False then 'False'
+            end)
+     FROM opportunity_changes_history och 
+     WHERE type in (select type from opportunity_changes_history where type = 'commit')
+     group by opportunity_id ) as 'Commited',
     -- Status
     o.status as 'Status',
     -- Completed applications
