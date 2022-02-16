@@ -23,7 +23,7 @@ SELECT
               when type = 'commit' and value is False then 'False'
             end)
      FROM opportunity_changes_history och 
-     WHERE opportunity_id =  o.id AND type in (select type from opportunity_changes_history where type = 'commit')
+     WHERE type in (select type from opportunity_changes_history where type = 'commit')
      group by opportunity_id ) as 'Commited',
     -- Status
     o.status as 'Status',
