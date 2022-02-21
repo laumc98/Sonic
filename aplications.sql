@@ -18,7 +18,7 @@ select
    sum(case when utm_medium = 'google_jobs' then 1 else 0 end) as 'Google for jobs',
    sum(case when utm_medium = 'fb_jobs' then 1 else 0 end) as 'Facebook jobs',
    sum(case when utm_medium = 'ref_ts' then 1 else 0 end) as 'Referrals from the TS',
-   sum(case when utm_medium = 'shr_ts' then 1 else 0 end) as 'Talent seeker sharing their own post',
+   sum(case when utm_medium = 'shr_ts' then 1 else 0 end) as 'Talent seekers sharing their own post',
    sum(case when utm_medium = 'ro_sug' then 1 else 0 end) as 'Personal reach out to manually invited',
    sum(case when utm_medium = 'pr_sml_jobs' then 1 else 0 end) as 'Personal reach out to candidates of similar jobs',
    sum(case when utm_medium = 'rc_trrx_inv' then 1 else 0 end) as 'Manual invite by Torrex of registered candidates (internal sourcing)',
