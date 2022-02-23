@@ -17,7 +17,6 @@ SELECT
     DATE(o.reviewed) as 'Approved date',
     -- Applicant Acquisition Coordinator
     (select name FROM people p WHERE o.applicant_coordinator_person_id=p.id) as 'Applicant Acquisition Coordinator',
-    -- Commited date
     -- Status
     o.status as 'Status',
     -- Completed applications
@@ -31,7 +30,7 @@ SELECT
     and oc2.name = 'mutual matches'
     and (last_evaluation.last_interest is not null and (last_evaluation.last_not_interest is null or last_evaluation.last_interest > last_evaluation.last_not_interest)) then 1 else 0 end)
     as 'Mutual matches',
-    --Active
+    -- Active
     sum(case when oc.id is not null and oc.interested is not null and oc.column_id is not null
     and SUBSTRING(oc2.name, 1,2) <> '@ '
     and SUBSTRING(oc2.name, 1,2) <> '#@'
