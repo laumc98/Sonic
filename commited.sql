@@ -3,7 +3,7 @@ select
     (case
       when type = 'commit' and value is True then 'True'
       when type = 'commit' and value is False then 'False'
-     end) as 'Commited'
+     end) as 'Outbound Efforts'
 from opportunity_changes_history
 where type in (select type from opportunity_changes_history where type = 'commit')
 group by ID
