@@ -6,7 +6,8 @@ SELECT
     -- Company
    (select organization_id from opportunity_organizations where opportunity_id =  o.id  group by organization_id limit 1) as 'Company_id',
     -- location
-    (select group_concat(l.location) from opportunity_places l where l.opportunity_id = o.id and l.active = 1) as 'location',
+    
+    IF(o.timezones is not null, o.timezones, "Remote Anywhere") as 'location',
     -- Type of service
     o.fulfillment as 'Type of service',
     -- Type of job
