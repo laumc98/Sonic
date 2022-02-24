@@ -7,7 +7,7 @@ SELECT
    (select organization_id from opportunity_organizations where opportunity_id =  o.id  group by organization_id limit 1) as 'Company_id',
     -- location
     
-    IF(o.timezones is not null, o.timezones, "Remote Anywhere") as 'location',
+    IF(o.timezones is not null, o.timezones, "Remote Anywhere") as 'Location',
     -- Type of service
     o.fulfillment as 'Type of service',
     -- Type of job
