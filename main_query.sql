@@ -4,7 +4,7 @@ SELECT
     -- Job title
     o.objective as 'Job title',
     -- Company
-    (select organization_id from opportunity_organizations where opportunity_id =  o.id  group by organization_id limit 1) as 'Company_id',
+   (select organization_id from opportunity_organizations where opportunity_id =  o.id  group by organization_id limit 1) as 'Company_id',
     -- location
     (select group_concat(l.location) from opportunity_places l where l.opportunity_id = o.id and l.active = 1) as 'Location',
     -- timezones
@@ -19,8 +19,12 @@ SELECT
     DATE(o.reviewed) as 'Approved date',
     -- Applicant Acquisition Coordinator
     (select name FROM people p WHERE o.applicant_coordinator_person_id=p.id) as 'Applicant Acquisition Coordinator',
+    -- Commited date
+    (select DATE(och.created) FROM opportunity_changes_history och WHERE och.opportunity_id = o.id group by opportunity_id ) as 'Commited date',
     -- Status
     o.status as 'Status',
+    -- Reason
+    (select Reason from opportunity_changes_history as och where true and type = 'close' and Reason is not null and o.id = och.opportunity_id order by och.created desc limit 1) as 'Reason',
     -- Completed applications
     sum(case when oc.id is not null and oc.interested is not null then 1 else 0 end) as 'Completed applications',
     -- Completed applications yesterday
