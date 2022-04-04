@@ -56,7 +56,12 @@ SELECT
     DATE(o.last_updated) as 'Last changes',
     -- Closing date
     DATE(o.deadline) as 'Closing Date',
+    -- Closed Date
+    (select DATE(och.created) from opportunity_changes_history as och where type = 'close' and o.id = och.opportunity_id group by och.opportunity_id) as 'Closed date',
+    -- Language
     o.locale as 'Language of the post',
+    -- Languages required
+    (select group_concat(concat(lan.language_code,' : ',lan.fluency)) from opportunity_languages lan where o.id = lan.opportunity_id and lan.active = 1) as 'Languages',
     -- Hires
     (select sum(case when osh.hiring_date is not null then 1 else 0 end) from opportunity_stats_hires osh where o.id=osh.opportunity_id) as 'Hires',
     -- Hires yesterday
@@ -72,6 +77,7 @@ SELECT
 FROM opportunities o 
 LEFT JOIN opportunity_candidates oc on o.id=oc.opportunity_id
 left join opportunity_columns oc2 on oc.column_id = oc2.id
+
 left join (
   select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
   from member_evaluations me
