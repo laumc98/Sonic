@@ -1,4 +1,4 @@
-select o.id as 'OppID', count(*) as 'views'
+select o.id as 'ID', count(*) as 'views'
 from views v 
 inner join opportunities o on o.id = v.target_id
 inner join opportunity_members omp on omp.opportunity_id = v.target_id 
