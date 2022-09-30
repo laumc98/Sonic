@@ -6,3 +6,5 @@ FROM
     career_advisor_invitation_requests
 WHERE 
     career_advisor_invitation_requests.status = "completed"
+GROUP BY
+    1
