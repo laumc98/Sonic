@@ -82,7 +82,7 @@ SELECT
     -- Hires yesterday
     (select sum(case when osh.hiring_date is not null and DATE(osh.hiring_date) = DATE(DATE(NOW()) - INTERVAL 1 DAY) then 1 else 0 end) from opportunity_operational_hires osh where o.id=osh.opportunity_id) as 'Hires yesterday',
     -- Opportunity approved yesterday
-   case when DATE(o.reviewed) = DATE(DATE(NOW()) - INTERVAL 1 DAY) then TRUE else null end as 'Opportunity approved yesterday',
+   case when DATE(o.last_reviewed) = DATE(DATE(NOW()) - INTERVAL 1 DAY) then TRUE else null end as 'Opportunity approved yesterday',
     -- Completed applications in the last 14 days
     sum(case when oc.id is not null and oc.interested is not null and DATE(oc.created) >= DATE(DATE(NOW()) - INTERVAL 14 DAY) then 1 else 0 end) as 'Completed applications in the last 14 days',
     -- Sharing token
