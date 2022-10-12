@@ -3,7 +3,7 @@ select
    opportunity_candidates.opportunity_id as ID,
    date(opportunities.last_reviewed) as approved_date,
    date(opportunity_candidates.interested) as interested_date,
-   `Tracking Codes`.`utm_medium` as utm_medium,
+   tracking_codes.utm_medium as utm_medium,
    min(
       IF (
          date(opportunities.last_reviewed) < date(opportunity_candidates.interested),
@@ -23,11 +23,12 @@ select
    ) AS 'RT'
 FROM
    opportunity_candidates
-   LEFT JOIN `tracking_code_candidates` `Tracking Code Candidates - Person` ON `opportunity_candidates`.`id` = `Tracking Code Candidates - Person`.`candidate_id`
-   LEFT JOIN `tracking_codes` `Tracking Codes` ON `Tracking Code Candidates - Person`.`tracking_code_id` = `Tracking Codes`.`id`
+   LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
+   LEFT JOIN tracking_codes ON tracking_code_candidates.tracking_code_id = tracking_codes.id
    LEFT JOIN opportunities on opportunities.id = opportunity_candidates.opportunity_id
 WHERE
    opportunity_candidates.interested is not null
+   AND opportunities.last_reviewed > date(date_add(now(6), INTERVAL -1 year))
    AND utm_medium IN (
       'ja_mtc',
       'ja_rlvsgl_prs',
