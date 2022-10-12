@@ -47,7 +47,7 @@ FROM
                 AND ostr.proficiency = ''
             )
             AND o.objective NOT LIKE '**%'
-            AND o.reviewed >= '2021/06/01'
+            AND o.last_reviewed >= '2021/06/01'
             AND o.review = 'approved'
         GROUP BY
             o.id

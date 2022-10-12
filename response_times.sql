@@ -1,22 +1,22 @@
 /* AA : Sonic : response times: prod */ 
 select
    opportunity_candidates.opportunity_id as ID,
-   date(opportunities.reviewed) as approved_date,
+   date(opportunities.last_reviewed) as approved_date,
    date(opportunity_candidates.interested) as interested_date,
    `Tracking Codes`.`utm_medium` as utm_medium,
    min(
       IF (
-         date(opportunities.reviewed) < date(opportunity_candidates.interested),
+         date(opportunities.last_reviewed) < date(opportunity_candidates.interested),
          timestampdiff(
             day,
-            date(opportunities.reviewed),
+            date(opportunities.last_reviewed),
             date(opportunity_candidates.interested)
          ),
          (
             timestampdiff(
                day,
                date(opportunity_candidates.interested),
-               date(opportunities.reviewed)
+               date(opportunities.last_reviewed)
             ) * -1
          )
       )

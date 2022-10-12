@@ -23,7 +23,7 @@ WHERE
             INNER JOIN person_flags pf ON pf.person_id = omp.person_id
             AND pf.opportunity_crawler = FALSE
         WHERE
-            o.reviewed >= '2021/01/01'
+            o.last_reviewed >= '2021/01/01'
             AND o.objective NOT LIKE '**%'
             AND o.review = 'approved'
     )

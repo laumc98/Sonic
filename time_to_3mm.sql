@@ -1,9 +1,9 @@
 /* AA : Sonic : time to 3mm: prod */ 
 SELECT
           opportunity_id AS ID,
-          date(reviewed) AS reviewed_date,
+          date(last_reviewed) AS reviewed_date,
           date(created) AS match_date,
-          datediff(date(created),date(reviewed)) AS time_to_3mm
+          datediff(date(created),date(last_reviewed)) AS time_to_3mm
       FROM
           (SELECT
                matches.*,
@@ -21,7 +21,7 @@ SELECT
                (SELECT
                     oc.opportunity_id,
                     occh.created,
-                    o.reviewed,
+                    o.last_reviewed,
                     oc.name
                 FROM
                     opportunity_candidate_column_history occh
@@ -40,7 +40,7 @@ SELECT
                                        INNER JOIN person_flags pf ON pf.person_id = omp.person_id
                                        AND pf.opportunity_crawler = FALSE
                                WHERE
-                                     o.reviewed >= '2021/01/01'
+                                     o.last_reviewed >= '2021/01/01'
                                  AND o.objective NOT LIKE '**%'
                                  AND o.review = 'approved')
                 ORDER BY
