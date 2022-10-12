@@ -19,7 +19,7 @@ SELECT
    -- Created date 
     DATE(o.created) as 'Created date',
     -- Approved date
-    DATE(o.reviewed) as 'Approved date',
+    DATE(o.last_reviewed) as 'Approved date',
     o.review as 'Approved',
     -- Applicant Acquisition Coordinator
     (select name FROM people p WHERE o.applicant_coordinator_person_id=p.id) as 'Applicant Acquisition Coordinator',
@@ -115,7 +115,7 @@ WHERE true
             and o.status <> 'opening-soon'
             )
     AND o.Objective not like '**%'
-    AND DATE(o.reviewed) > date(date_add(now(6), INTERVAL -1 year))
+    AND DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
     AND o.active = TRUE
 
 GROUP BY o.id
