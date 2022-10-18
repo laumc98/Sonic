@@ -3,7 +3,7 @@ SELECT
           opportunity_id AS ID,
           date(last_reviewed) AS reviewed_date,
           date(created) AS match_date,
-          datediff(date(created),date(coalesce(null, o.first_reviewed, o.last_reviewed))) AS time_to_3mm
+          datediff(date(created),date(coalesce(null, first_reviewed, last_reviewed))) AS time_to_3mm
       FROM
           (SELECT
                matches.*,
@@ -21,6 +21,7 @@ SELECT
                (SELECT
                     oc.opportunity_id,
                     occh.created,
+                    o.first_reviewed,
                     o.last_reviewed,
                     oc.name
                 FROM
