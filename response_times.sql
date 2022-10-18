@@ -28,7 +28,7 @@ FROM
    LEFT JOIN opportunities on opportunities.id = opportunity_candidates.opportunity_id
 WHERE
    opportunity_candidates.interested is not null
-   AND opportunities.last_reviewed > date(date_add(now(6), INTERVAL -1 year))
+   AND date(coalesce(null, o.first_reviewed, o.last_reviewed)) > date(date_add(now(6), INTERVAL -1 year))
    AND utm_medium IN (
       'ja_mtc',
       'ja_rlvsgl_prs',

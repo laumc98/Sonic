@@ -1,6 +1,6 @@
 /* AA : Sonic : SQ disqualified: prod */
 SELECT
-    `max_rank`.`id`AS `candidate_id`,
+    `max_rank`.`id` AS `candidate_id`,
     `max_rank`.`Opportunity_ID` AS `Opportunity ID`,
     `max_rank`.`name` AS `People__name`,
     `max_rank`.`username` AS `People__username`,
@@ -27,25 +27,45 @@ FROM
             `comments`.`text`
         FROM
             `opportunity_candidates`
-            INNER JOIN `opportunity_questions` ON (`opportunity_candidates`.`opportunity_id` = `opportunity_questions`.`opportunity_id`) AND `opportunity_questions`.`active` IS TRUE
+            INNER JOIN `opportunity_questions` ON (
+                `opportunity_candidates`.`opportunity_id` = `opportunity_questions`.`opportunity_id`
+            )
+            AND `opportunity_questions`.`active` IS TRUE
             LEFT JOIN `member_evaluations` ON `member_evaluations`.`candidate_id` = `opportunity_candidates`.`id`
             LEFT JOIN `questions` ON `opportunity_questions`.`question_id` = `questions`.`id`
-            LEFT JOIN `opportunity_candidate_responses` ON (`opportunity_candidates`.`id` = `opportunity_candidate_responses`.`candidate_id` AND `opportunity_questions`.`question_id` = `opportunity_candidate_responses`.`question_id`) AND `opportunity_candidate_responses`.`active` IS TRUE
+            LEFT JOIN `opportunity_candidate_responses` ON (
+                `opportunity_candidates`.`id` = `opportunity_candidate_responses`.`candidate_id`
+                AND `opportunity_questions`.`question_id` = `opportunity_candidate_responses`.`question_id`
+            )
+            AND `opportunity_candidate_responses`.`active` IS TRUE
             LEFT JOIN `people` ON `opportunity_candidates`.`person_id` = `people`.`id`
-            LEFT JOIN `comments` ON (`people`.`id` = `comments`.`candidate_person_id` AND `opportunity_candidates`.`opportunity_id` = `comments`.`opportunity_id`)
+            LEFT JOIN `comments` ON (
+                `people`.`id` = `comments`.`candidate_person_id`
+                AND `opportunity_candidates`.`opportunity_id` = `comments`.`opportunity_id`
+            )
         WHERE
             (
                 `questions`.`purpose` = 'filter'
                 AND `opportunity_candidate_responses`.`id` IS NOT NULL
                 AND `member_evaluations`.`not_interested` IS NOT NULL
-                AND `member_evaluations`.`reason`= 'screening-questions' 
+                AND `member_evaluations`.`reason` = 'screening-questions'
             )
         GROUP BY
             `opportunity_candidates`.`id`,
             `opportunity_candidates`.`opportunity_id`
     ) AS `max_rank`
-INNER JOIN `opportunity_questions` ON (`max_rank`.`rank` = `opportunity_questions`.`rank` AND `max_rank`.`Opportunity_ID` = `opportunity_questions`.`opportunity_id`) AND `opportunity_questions`.`active` IS TRUE
-LEFT JOIN `questions` ON `opportunity_questions`.`question_id` = `questions`.`id`
-LEFT JOIN `opportunity_candidate_responses` ON (`max_rank`.`id` = `opportunity_candidate_responses`.`candidate_id` AND `opportunity_questions`.`question_id` = `opportunity_candidate_responses`.`question_id`) AND `opportunity_candidate_responses`.`active` IS TRUE
-WHERE `max_rank`.`not_interested` >= date(date_add(now(6), INTERVAL -90 day))
-ORDER BY `Opportunity ID` DESC
+    INNER JOIN `opportunity_questions` ON (
+        `max_rank`.`rank` = `opportunity_questions`.`rank`
+        AND `max_rank`.`Opportunity_ID` = `opportunity_questions`.`opportunity_id`
+    )
+    AND `opportunity_questions`.`active` IS TRUE
+    LEFT JOIN `questions` ON `opportunity_questions`.`question_id` = `questions`.`id`
+    LEFT JOIN `opportunity_candidate_responses` ON (
+        `max_rank`.`id` = `opportunity_candidate_responses`.`candidate_id`
+        AND `opportunity_questions`.`question_id` = `opportunity_candidate_responses`.`question_id`
+    )
+    AND `opportunity_candidate_responses`.`active` IS TRUE
+WHERE
+    `max_rank`.`not_interested` >= date(date_add(now(6), INTERVAL -90 day))
+ORDER BY
+    `Opportunity ID` DESC

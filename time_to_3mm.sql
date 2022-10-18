@@ -3,7 +3,7 @@ SELECT
           opportunity_id AS ID,
           date(last_reviewed) AS reviewed_date,
           date(created) AS match_date,
-          datediff(date(created),date(last_reviewed)) AS time_to_3mm
+          datediff(date(created),date(coalesce(null, o.first_reviewed, o.last_reviewed))) AS time_to_3mm
       FROM
           (SELECT
                matches.*,
@@ -40,7 +40,7 @@ SELECT
                                        INNER JOIN person_flags pf ON pf.person_id = omp.person_id
                                        AND pf.opportunity_crawler = FALSE
                                WHERE
-                                     o.last_reviewed >= '2021/07/01'
+                                     date(coalesce(null, o.first_reviewed, o.last_reviewed)) >= '2021/07/01'
                                  AND o.objective NOT LIKE '**%'
                                  AND o.review = 'approved')
                 ORDER BY
