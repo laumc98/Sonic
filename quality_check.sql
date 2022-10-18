@@ -1,6 +1,7 @@
 /* AA : Sonic : quality check: prod */ 
 SELECT
     `member_evaluations`.`candidate_id` AS `candidate_id`,
+    `People`.`gg_id` AS `gg_id`,
     `People`.`name` AS `People__name`,
     `People`.`username` AS `People__username`,
     `Opportunity Candidates - Candidate`.`opportunity_id` AS `Opportunity ID`,
