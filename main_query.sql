@@ -22,7 +22,7 @@ SELECT
     date(coalesce(null, o.first_reviewed, o.last_reviewed)) as 'Approved date',
     o.review as 'Approved',
     -- Applicant Acquisition Coordinator
-    (select name FROM people p WHERE o.applicant_coordinator_person_id=p.id) as 'Applicant Acquisition Coordinator',
+    (select name FROM people p WHERE o.candidate_recruiter_person_id = p.id) as 'Candidate Recruiter',
     -- DR 
     (select p.name from opportunity_members omp left join people p on omp.person_id = p.id where omp.tso_operator = TRUE and omp.opportunity_id = o.id) as 'Ticket Owner',
     -- Commited date
