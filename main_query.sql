@@ -45,6 +45,9 @@ SELECT
     -- Real mutual matches
     (select count(distinct occh.candidate_id) from opportunity_candidate_column_history occh inner join opportunity_columns oc ON occh.to = oc.id where oc.name = 'mutual matches' and o.id = oc.opportunity_id)
     as 'Real Mutual matches',
+    -- Ready for interview
+    (select count(distinct occh.candidate_id) from opportunity_candidate_column_history occh inner join opportunity_columns oc ON occh.to = oc.id where oc.funnel_tag = 'ready_for_interview' and o.id = oc.opportunity_id)
+    as 'Ready for interview',
     -- Active
     sum(case when oc.id is not null and oc.interested is not null and oc.column_id is not null
     and (oc2.funnel_tag = 'ready_for_interview'
