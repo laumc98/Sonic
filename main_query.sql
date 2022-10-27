@@ -19,7 +19,7 @@ SELECT
    -- Created date 
     DATE(o.created) as 'Created date',
     -- Approved date
-    date(coalesce(null, o.first_reviewed, o.last_reviewed)) as 'Approved date',
+    coalesce(null, o.first_reviewed, o.last_reviewed) as 'Approved date',
     o.review as 'Approved',
     -- Applicant Acquisition Coordinator
     (select name FROM people p WHERE o.candidate_recruiter_person_id = p.id) as 'Candidate Recruiter',
