@@ -84,6 +84,8 @@ SELECT
     (select sum(case when osh.hiring_date is not null then 1 else 0 end) from opportunity_operational_hires osh where o.id=osh.opportunity_id) as 'Hires',
     -- Hires yesterday
     (select sum(case when osh.hiring_date is not null and DATE(osh.hiring_date) = DATE(DATE(NOW()) - INTERVAL 1 DAY) then 1 else 0 end) from opportunity_operational_hires osh where o.id=osh.opportunity_id) as 'Hires yesterday',
+    -- First hire date 
+    (select min(osh.hiring_date) from opportunity_operational_hires osh where o.id=osh.opportunity_id) as 'First hire date',
     -- Opportunity approved yesterday
    case when DATE(o.last_reviewed) = DATE(DATE(NOW()) - INTERVAL 1 DAY) then TRUE else null end as 'Opportunity approved yesterday',
     -- Completed applications in the last 14 days
