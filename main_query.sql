@@ -75,7 +75,7 @@ SELECT
     -- Closing date
     DATE(o.deadline) as 'Closing Date',
     -- Closed Date
-    (select DATE(och.created) from opportunity_changes_history as och where type = 'close' and o.id = och.opportunity_id group by och.opportunity_id) as 'Closed date',
+    (select DATE(och.created) from opportunity_changes_history as och where type = 'close' and o.id = och.opportunity_id and o.status = 'closed' group by och.opportunity_id) as 'Closed date',
     -- Language
     o.locale as 'Language of the post',
     -- Languages required
