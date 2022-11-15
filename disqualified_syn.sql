@@ -5,7 +5,6 @@ SELECT
     `people`.`username` AS `Username`,
     `Opportunity Candidates`.`interested` AS `Interested_date`,
     max(`member_evaluations`.`not_interested`) AS `Disqualified_date`,
-    `member_evaluations`.`reason` AS `Reason disqualified`,
     `member_evaluations_reason`.`reason` AS `reason_2_Syn`,
     `Member Evaluation Feedback - Feedback`.`feedback` AS `Other reason disqualified`,
     `Tracking Codes`.`utm_medium` AS `UTM`
