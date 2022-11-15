@@ -49,7 +49,7 @@ FROM
                 `questions`.`purpose` = 'filter'
                 AND `opportunity_candidate_responses`.`id` IS NOT NULL
                 AND `member_evaluations`.`not_interested` IS NOT NULL
-                AND `member_evaluations`.`reason` = 'screening-questions'
+                AND `member_evaluations_reason`.`reason` = 'screening-questions'
             )
         GROUP BY
             `opportunity_candidates`.`id`,
