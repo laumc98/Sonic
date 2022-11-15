@@ -23,7 +23,7 @@ FROM
             `people`.`name`,
             `people`.`username`,
             `member_evaluations`.`not_interested`,
-            `member_evaluations`.`reason`,
+            `member_evaluations_reason`.`reason`,
             `comments`.`text`
         FROM
             `opportunity_candidates`
@@ -32,6 +32,7 @@ FROM
             )
             AND `opportunity_questions`.`active` IS TRUE
             LEFT JOIN `member_evaluations` ON `member_evaluations`.`candidate_id` = `opportunity_candidates`.`id`
+            LEFT JOIN `member_evaluations_reason` ON `member_evaluations`.`id` = `member_evaluations_reason`.`member_evaluation_id`
             LEFT JOIN `questions` ON `opportunity_questions`.`question_id` = `questions`.`id`
             LEFT JOIN `opportunity_candidate_responses` ON (
                 `opportunity_candidates`.`id` = `opportunity_candidate_responses`.`candidate_id`
