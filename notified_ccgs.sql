@@ -18,4 +18,5 @@ WHERE
         )
         AND notifications.status = 'sent'
         AND people.subject_identifier IS NULL
+        AND notifications.send_at > date(date_add(now(6), INTERVAL -1 year))
     )
