@@ -44,6 +44,10 @@ where
         'ja_rlvsgl_prs',
         'ja_allsgl_prs',
         'ja_rlvsgl_org',
-        'ja_allsgl_org'
+        'ja_allsgl_org',
+        'syn_paid',
+        'rc_syn_paid',
+        'rc_src_trrx_inv',
+        'rc_syn_trrx_inv'
     )
 group by ID,finished,UTM
