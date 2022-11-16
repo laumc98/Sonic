@@ -4,6 +4,7 @@ SELECT
    people.name,
    people.email,
    people.phone,
+   people.username,
    notifications.template,
    notifications.send_at AS date,
    notifications.context
