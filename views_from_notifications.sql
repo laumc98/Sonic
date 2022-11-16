@@ -28,9 +28,9 @@ WHERE
             OR "atomic"."events"."mkt_medium" = 'rc_ccg'
             OR "atomic"."events"."mkt_medium" = 'rc_syn'
             OR "atomic"."events"."mkt_medium" = 'rc_src'
-            OR "atomic"."events"."mkt_medium" = 'syn_paid',
-            OR "atomic"."events"."mkt_medium" = 'rc_syn_paid',
-            OR "atomic"."events"."mkt_medium" = 'rc_src_trrx_inv',
+            OR "atomic"."events"."mkt_medium" = 'syn_paid'
+            OR "atomic"."events"."mkt_medium" = 'rc_syn_paid'
+            OR "atomic"."events"."mkt_medium" = 'rc_src_trrx_inv'
             OR "atomic"."events"."mkt_medium" = 'rc_syn_trrx_inv'
         )
     )
