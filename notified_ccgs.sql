@@ -4,7 +4,7 @@ SELECT
    people.name,
    people.email,
    people.phone,
-   people.public_id AS 'username',
+   people.gg_id,
    notifications.template,
    notifications.send_at AS date,
    notifications.context
