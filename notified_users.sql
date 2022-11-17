@@ -30,5 +30,6 @@ WHERE
             OR notifications.template = 'career-advisor-syndication-already-exist'
         )
         AND notifications.status = 'sent'
-        AND notifications.send_at > date(date_add(now(6), INTERVAL -7 month))
+        AND notifications.send_at > date(date_add(now(6), INTERVAL -5 month))
+        AND people.name NOT LIKE '**test*'
     )
