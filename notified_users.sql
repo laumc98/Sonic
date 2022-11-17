@@ -1,10 +1,6 @@
 /* AA : Sonic : notified users: prod */ 
 SELECT
    TRIM('"' FROM JSON_EXTRACT(notifications.context, '$.opportunityId')) AS 'Alfa ID',
-   people.id as person_id,
-   people.name,
-   people.email,
-   people.phone,
    people.gg_id,
    notifications.template,
    notifications.send_at AS date,
