@@ -14,15 +14,12 @@ SELECT
 FROM
     (
         SELECT
-            ooh.id AS hire_id,
+            o.id AS ID,
             oc.periodicity,
             oc.currency,
-            ooh.hiring_date,
-            o.id AS ID,
             COALESCE(NULLIF(oc.max_amount,0), oc.min_amount) AS value
         FROM
-            opportunity_operational_hires ooh
-        INNER JOIN opportunities o ON o.id = ooh.opportunity_id
+            opportunities o
         INNER JOIN opportunity_compensations oc ON o.id = oc.opportunity_id AND oc.active
         WHERE
             o.id NOT IN (1861230, 1316677)
@@ -36,5 +33,6 @@ FROM
                     AND active
             )
             AND o.objective not like '**%'
+            AND date(coalesce(null, o.first_reviewed, o.last_reviewed)) > date(date_add(now(6), INTERVAL -1 year))
     ) AS compensations
 GROUP BY 1
