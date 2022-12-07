@@ -7,7 +7,10 @@ SELECT
     `opportunity`.`timeframe` AS `timeframe`,
     `opportunity`.`target_hires` AS `target_hires`,
     `c`.`channels`,
-    c.`channels_open_date`,
+    `c`.`channels_open_date`,
+    `syn_activation`.`syn_activation_date`,
+    `src_activation`.`src_activation_date`,
+    `paid_syn_activation`.`paid_syn_activation_date`,
     `a`.`applicationsCount` as `applications`,
     `mm`.`countMM` as `mutual_matches`,
     `atm`.`applications_count` as `high_quality_app`,
@@ -39,6 +42,42 @@ FROM
         group by
             opportunity_reference_id
     ) c ON `opportunity`.`ref_id` = `c`.`opportunity_reference_id`
+    LEFT JOIN (
+        SELECT
+            opportunity_reference_id,
+            MIN(created) AS 'syn_activation_date'
+        FROM
+            opportunity_channels
+        WHERE
+            opportunity_channels.source = 'NIAGARA'
+            AND channel = 'EXTERNAL_NETWORKS'
+        GROUP BY 
+            opportunity_reference_id
+    ) syn_activation ON `opportunity`.`ref_id` = `syn_activation`.`opportunity_reference_id`
+    LEFT JOIN (
+        SELECT
+            opportunity_reference_id,
+            MIN(created) AS 'src_activation_date'
+        FROM
+            opportunity_channels
+        WHERE
+            opportunity_channels.source = 'NIAGARA'
+            AND channel = 'EXTERNAL_SOURCING'
+        GROUP BY 
+            opportunity_reference_id
+    ) src_activation ON `opportunity`.`ref_id` = `src_activation`.`opportunity_reference_id`
+    LEFT JOIN (
+        SELECT
+            opportunity_reference_id,
+            MIN(created) AS 'paid_syn_activation_date'
+        FROM
+            opportunity_channels
+        WHERE
+            opportunity_channels.source = 'NIAGARA'
+            AND channel = 'PAID_EXTERNAL_NETWORK'
+        GROUP BY 
+            opportunity_reference_id
+    ) paid_syn_activation ON `opportunity`.`ref_id` = `paid_syn_activation`.`opportunity_reference_id`
     LEFT JOIN (
         SELECT
             `applications`.`opportunity_reference_id` AS `opportunity_reference_id`,
