@@ -10,6 +10,7 @@ SELECT
     `c`.`channels_open_date`,
     `syn_activation`.`syn_activation_date`,
     `src_activation`.`src_activation_date`,
+    `max_src_activation`.`max_src_activation_date`,
     `paid_syn_activation`.`paid_syn_activation_date`,
     `a`.`applicationsCount` as `applications`,
     `mm`.`countMM` as `mutual_matches`,
@@ -78,6 +79,18 @@ FROM
         GROUP BY 
             opportunity_reference_id
     ) paid_syn_activation ON `opportunity`.`ref_id` = `paid_syn_activation`.`opportunity_reference_id`
+    LEFT JOIN (
+        SELECT
+            opportunity_reference_id,
+            MAX(created) AS 'max_src_activation_date'
+        FROM
+            opportunity_channels
+        WHERE
+            opportunity_channels.source = 'NIAGARA'
+            AND channel = 'EXTERNAL_SOURCING'
+        GROUP BY 
+            opportunity_reference_id
+    ) max_src_activation ON `opportunity`.`ref_id` = `max_src_activation`.`opportunity_reference_id`
     LEFT JOIN (
         SELECT
             `applications`.`opportunity_reference_id` AS `opportunity_reference_id`,
