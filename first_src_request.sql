@@ -1,5 +1,5 @@
 SELECT
-    TRIM('"' FROM JSON_EXTRACT(notifications.context, '$.opportunityId')) AS AlfaID,
+    TRIM('"' FROM JSON_EXTRACT(notifications.context, '$.opportunityId')) AS 'Alfa ID',
     min(notifications.sent_at) AS 'first_cr_src_request_date'
 FROM
     notifications
@@ -25,4 +25,4 @@ WHERE
         )
     )
 GROUP BY
-    AlfaID
+    1
