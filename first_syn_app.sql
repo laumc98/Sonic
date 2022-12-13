@@ -10,6 +10,7 @@ WHERE
     opportunity_candidates.interested IS NOT NULL
     AND (tracking_codes.utm_medium = 'syn'
             OR tracking_codes.utm_medium = 'rc_syn'
+            OR tracking_codes.utm_medium = 'rc_src'
             OR tracking_codes.utm_medium = 'syn_paid'
             or tracking_codes.utm_medium = 'rc_syn_paid')
     AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
