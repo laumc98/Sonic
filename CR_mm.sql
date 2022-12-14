@@ -15,7 +15,7 @@ FROM
     LEFT JOIN people p ON o.candidate_recruiter_person_id = p.id
 WHERE
     oc.name = 'mutual matches'
-    AND occh.created >= '2022-10-23'
+    AND occh.created >= '2022-10-25'
     AND o.candidate_recruiter_person_id IS NOT NULL
     AND (tc.utm_campaign = 'amdm'
         OR tc.utm_campaign = 'mcog'
