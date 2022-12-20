@@ -5,6 +5,7 @@ SELECT
     `People`.`name` AS `People__name`,
     `People`.`username` AS `People__username`,
     `Opportunity Candidates - Candidate`.`opportunity_id` AS `Opportunity ID`,
+    (select `people`.`name` FROM `people`  WHERE `opportunities`.`candidate_recruiter_person_id` = `people`.`id`) as `Candidate Recruiter`,
     max(`Opportunity Candidates - Candidate`.`interested`) AS `interested`,
     max(`member_evaluations`.`not_interested`) AS `not_interested`,
     max(`member_evaluations_reason`.`reason`) AS `reason_2`,
@@ -16,6 +17,7 @@ SELECT
 FROM
     `member_evaluations`
     LEFT JOIN `opportunity_candidates` `Opportunity Candidates - Candidate` ON `member_evaluations`.`candidate_id` = `Opportunity Candidates - Candidate`.`id`
+    LEFT JOIN `opportunities` ON `opportunities`.`id` = `Opportunity Candidates - Candidate`.`opportunity_id`
     LEFT JOIN `tracking_code_candidates` `Tracking Code Candidates - Candidate` ON `member_evaluations`.`candidate_id` = `Tracking Code Candidates - Candidate`.`candidate_id`
     LEFT JOIN `tracking_codes` `Tracking Codes` ON `Tracking Code Candidates - Candidate`.`tracking_code_id` = `Tracking Codes`.`id`
     LEFT JOIN `people` `People` ON `Opportunity Candidates - Candidate`.`person_id` = `People`.`id`
@@ -27,4 +29,3 @@ WHERE
     `Opportunity Candidates - Candidate`.`interested` >= date(date_add(now(6), INTERVAL -60 day))
 GROUP BY `member_evaluations`.`candidate_id`,`Opportunity Candidates - Candidate`.`opportunity_id`
 ORDER BY `member_evaluations`.`not_interested` DESC
-
