@@ -16,6 +16,10 @@ SELECT
     o.remote as 'Remote',
     -- Type of job
     o.commitment_id as 'Type of job',
+    -- Agreement type
+    o.agreement_type as 'Agreement type',
+    -- Opportunity details
+    od.content as 'Opportunity detail',
    -- Created date 
     DATE(o.created) as 'Created date',
     -- Approved date
@@ -98,13 +102,12 @@ SELECT
 
 FROM opportunities o 
 LEFT JOIN opportunity_candidates oc on o.id=oc.opportunity_id
-left join opportunity_columns oc2 on oc.column_id = oc2.id
-
-left join (
-  select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
-  from member_evaluations me
-  group by me.candidate_id) last_evaluation on last_evaluation.candidate_id = oc.id
-
+LEFT JOIN opportunity_columns oc2 on oc.column_id = oc2.id
+LEFT JOIN opportunity_details od on od.opportunity_id = o.id
+LEFT JOIN (
+    select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
+    from member_evaluations me
+    group by me.candidate_id) last_evaluation on last_evaluation.candidate_id = oc.id
 
 WHERE true
     and o.id IN (
