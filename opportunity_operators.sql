@@ -1,7 +1,7 @@
 /* AA : Sonic : opportunity operators: prod */ 
 SELECT
     opportunities.opportunity_id AS 'Alfa ID',
-    operators.operator_gg_id,
+    operators.operator_gg_id AS 'gg_id',
     opportunity_operators.role,
     operators.slack_id
 FROM 
