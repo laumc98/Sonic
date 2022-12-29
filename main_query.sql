@@ -19,7 +19,7 @@ SELECT
     -- Agreement type
     o.agreement_type as 'Agreement type',
     -- Opportunity details
-    od.content as 'Opportunity detail',
+    (select opportunity_details.content from opportunity_details where opportunity_details.active = true and opportunity_details.code = 'additional' limit 1) as 'Opportunity detail',
    -- Created date 
     DATE(o.created) as 'Created date',
     -- Approved date
@@ -103,7 +103,6 @@ SELECT
 FROM opportunities o 
 LEFT JOIN opportunity_candidates oc on o.id=oc.opportunity_id
 LEFT JOIN opportunity_columns oc2 on oc.column_id = oc2.id
-LEFT JOIN opportunity_details od on od.opportunity_id = o.id and od.active=true
 LEFT JOIN (
     select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
     from member_evaluations me
