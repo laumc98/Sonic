@@ -26,9 +26,9 @@ SELECT
     coalesce(null, o.first_reviewed, o.last_reviewed) as 'Approved date',
     o.review as 'Approved',
     -- Applicant Acquisition Coordinator
-    (select name FROM people p WHERE o.candidate_recruiter_person_id = p.id) as 'Candidate Recruiter',
+    -- (select name FROM people p WHERE o.candidate_recruiter_person_id = p.id) as 'Candidate Recruiter',
     -- DR 
-    (select p.name from opportunity_members omp left join people p on omp.person_id = p.id where omp.tso_operator = TRUE and omp.opportunity_id = o.id and omp.active = true) as 'Ticket Owner',
+    -- #(select p.name from opportunity_members omp left join people p on omp.person_id = p.id where omp.tso_operator = TRUE and omp.opportunity_id = o.id and omp.active = true) as 'Ticket Owner',
     -- Commited date
     (select DATE(och.created) FROM opportunity_changes_history och WHERE och.opportunity_id = o.id group by opportunity_id ) as 'Commited date',
     -- Status
