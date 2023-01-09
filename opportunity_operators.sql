@@ -8,3 +8,5 @@ FROM
     opportunity_operators
     LEFT JOIN opportunities ON opportunity_operators.opportunity_id = opportunities.id
     LEFT JOIN operators ON opportunity_operators.operator_id = operators.id
+WHERE 
+    opportunity_operators.deactivated IS NULL
