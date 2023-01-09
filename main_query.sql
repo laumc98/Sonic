@@ -19,7 +19,7 @@ SELECT
     -- Agreement type
     o.agreement_type as 'Agreement type',
     -- Opportunity details
-    (select opportunity_details.content from opportunity_details where opportunity_details.active = true and opportunity_details.code = 'responsibilities' limit 1) as 'Opportunity detail',
+    (select opportunity_details.content from opportunity_details where opportunity_details.active = true and opportunity_details.code = 'additional' limit 1) as 'Opportunity detail',
    -- Created date 
     DATE(o.created) as 'Created date',
     -- Approved date

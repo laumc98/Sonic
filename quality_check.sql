@@ -5,7 +5,6 @@ SELECT
     `People`.`name` AS `People__name`,
     `People`.`username` AS `People__username`,
     `Opportunity Candidates - Candidate`.`opportunity_id` AS `Opportunity ID`,
-    (select `people`.`name` FROM `people`  WHERE `opportunities`.`candidate_recruiter_person_id` = `people`.`id`) as `Candidate Recruiter`,
     max(`Opportunity Candidates - Candidate`.`interested`) AS `interested`,
     max(`member_evaluations`.`not_interested`) AS `not_interested`,
     max(`member_evaluations_reason`.`reason`) AS `reason_2`,
