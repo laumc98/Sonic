@@ -30,7 +30,6 @@ WHERE
     AND o.status <> 'opening-soon'
     AND o.active = TRUE
     AND DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
-    AND o.id = 1880246
 GROUP BY
     o.id,
     tc.utm_medium
