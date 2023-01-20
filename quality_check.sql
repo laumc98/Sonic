@@ -1,6 +1,6 @@
 /* AA : Sonic : quality check: prod */ 
 SELECT
-    `member_evaluations`.`candidate_id` AS `candidate_id`,
+    `Opportunity Candidates - Candidate`.`id` AS `candidate_id`,
     `People`.`gg_id` AS `gg_id`,
     `People`.`name` AS `People__name`,
     `People`.`username` AS `People__username`,
@@ -14,10 +14,10 @@ SELECT
     max(`Member Evaluation Feedback - Feedback`.`feedback`) AS `Reason - Others`,
     `Comments`.`text` AS `Notes`
 FROM
-    `member_evaluations`
-    LEFT JOIN `opportunity_candidates` `Opportunity Candidates - Candidate` ON `member_evaluations`.`candidate_id` = `Opportunity Candidates - Candidate`.`id`
+    `opportunity_candidates` `Opportunity Candidates - Candidate`
+    LEFT JOIN `member_evaluations` ON `member_evaluations`.`candidate_id` = `Opportunity Candidates - Candidate`.`id`
     LEFT JOIN `opportunities` ON `opportunities`.`id` = `Opportunity Candidates - Candidate`.`opportunity_id`
-    LEFT JOIN `tracking_code_candidates` `Tracking Code Candidates - Candidate` ON `member_evaluations`.`candidate_id` = `Tracking Code Candidates - Candidate`.`candidate_id`
+    LEFT JOIN `tracking_code_candidates` `Tracking Code Candidates - Candidate` ON `Opportunity Candidates - Candidate`.`id` = `Tracking Code Candidates - Candidate`.`candidate_id`
     LEFT JOIN `tracking_codes` `Tracking Codes` ON `Tracking Code Candidates - Candidate`.`tracking_code_id` = `Tracking Codes`.`id`
     LEFT JOIN `people` `People` ON `Opportunity Candidates - Candidate`.`person_id` = `People`.`id`
     LEFT JOIN `opportunity_columns` `Opportunity Columns - Column` ON `Opportunity Candidates - Candidate`.`column_id` = `Opportunity Columns - Column`.`id`
@@ -25,6 +25,8 @@ FROM
     LEFT JOIN `member_evaluation_feedback` `Member Evaluation Feedback - Feedback` ON `member_evaluations_reason`.`feedback_id` = `Member Evaluation Feedback - Feedback`.`id` 
     LEFT JOIN `comments` `Comments` ON `People`.`id` = `Comments`.`candidate_person_id` AND `Opportunity Candidates - Candidate`.`opportunity_id` = `Comments`.`opportunity_id`
 WHERE
-    `Opportunity Candidates - Candidate`.`interested` >= date(date_add(now(6), INTERVAL -60 day))
-GROUP BY `member_evaluations`.`candidate_id`,`Opportunity Candidates - Candidate`.`opportunity_id`
-ORDER BY `member_evaluations`.`not_interested` DESC
+    `Opportunity Candidates - Candidate`.`interested` IS NOT NULL
+    AND (`Opportunity Candidates - Candidate`.`interested` >= date(date_add(now(6), INTERVAL -60 day))
+            AND `Opportunity Candidates - Candidate`.`interested` < date(date_add(now(6), INTERVAL 1 day)))
+GROUP BY `Opportunity Candidates - Candidate`.`id`,`Opportunity Candidates - Candidate`.`opportunity_id`
+ORDER BY `Opportunity Candidates - Candidate`.`id` DESC
