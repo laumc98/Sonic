@@ -34,6 +34,7 @@ SELECT
    sum(case when utm_medium = 'rc_syn_paid' then 1 else 0 end) as 'Paid syn automatic',
    sum(case when utm_medium = 'rc_src_trrx_inv' then 1 else 0 end) as 'Recruiter chatbot src - trxx inv',
    sum(case when utm_medium = 'rc_syn_trrx_inv' then 1 else 0 end) as 'Recruiter chatbot syn - trxx inv',
+   sum(case when utm_medium = 'rc_syn_paid_trrx_inv' then 1 else 0 end) as 'Recruiter chatbot paid syn - trxx inv',
    sum(case when utm_medium is null then 1 else 0 end) as 'Unknown'
 FROM opportunity_candidates
     LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
