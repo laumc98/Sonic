@@ -10,3 +10,9 @@ FROM
     LEFT JOIN operators ON opportunity_operators.operator_id = operators.id
 WHERE 
     opportunity_operators.deactivated IS NULL
+    AND opportunities.opportunity_id != 'VWYo8bvd'
+    AND opportunities.opportunity_id != 'Gdj786Yr'
+GROUP BY 
+    opportunities.opportunity_id,
+    operators.operator_gg_id,
+    opportunity_operators.role
