@@ -1,126 +1,83 @@
 /* AA : Sonic : speed metrics: prod */ 
-SELECT 
-    opportunity.ref_id AS 'Alfa ID',
-    sourcing.src_first_app,
-    sourcing.src_min_diff,
-    syndication.syn_first_app,
-    syndication.syn_min_diff,
-    paid_syndication.paid_syn_first_app,
-    paid_syndication.paid_syn_min_diff
+SELECT
+    opportunities.id AS 'ID',
+    src_applications.first_app_date AS 'src_first_app_date',
+    syn_applications.first_app_date AS 'syn_first_app_date',
+    paid_syn_applications.first_app_date AS 'paid_syn_first_app_date',
+    all_syn_applications.first_app_date AS 'all_syn_first_app_date'
 FROM 
-    opportunity
-    INNER JOIN (
-        SELECT
-            opportunity_channels.opportunity_reference_id
-        FROM
-            opportunity_channels
-            INNER JOIN (
-                SELECT 
-                    applications.opportunity_reference_id,
-                    min(applications.timestamp) AS first_application
-                FROM 
-                    applications
-                WHERE 
-                    (applications.utm_medium = 'rc_src'
-                        OR applications.utm_medium = 'rc_src_trrx_inv'
-                        OR applications.utm_medium = 'rc_syn'
-                        OR applications.utm_medium = 'syn'
-                        OR applications.utm_medium = 'rc_syn_trrx_inv'
-                        OR applications.utm_medium = 'rc_syn_paid'
-                        OR applications.utm_medium = 'syn_paid'
-                        OR applications.utm_medium = 'rc_syn_paid_trrx_inv'
-                        )
-                    AND date(applications.timestamp) > '2022-10-25' 
-                GROUP BY 
-                    applications.opportunity_reference_id
-            ) AS applications ON opportunity_channels.opportunity_reference_id = applications.opportunity_reference_id
-        WHERE
-            (opportunity_channels.channel = 'EXTERNAL_SOURCING'
-                OR opportunity_channels.channel = 'EXTERNAL_NETWORKS'
-                OR opportunity_channels.channel = 'PAID_EXTERNAL_NETWORK')
-        GROUP BY 
-            opportunity_channels.opportunity_reference_id
-    ) AS opportunity_channels ON opportunity.ref_id = opportunity_channels.opportunity_reference_id
+    opportunities
     LEFT JOIN (
         SELECT
-            opportunity_channels.opportunity_reference_id,
-            date(applications.first_application) AS src_first_app,
-            min(TIMESTAMPDIFF(MINUTE,opportunity_channels.created,applications.first_application)) AS src_min_diff
-        FROM
-            opportunity_channels
-            INNER JOIN (
-                SELECT 
-                    applications.opportunity_reference_id,
-                    min(applications.timestamp) AS first_application
-                FROM 
-                    applications
-                WHERE 
-                    (applications.utm_medium = 'rc_src'
-                        OR applications.utm_medium = 'rc_src_trrx_inv')
-                    AND date(applications.timestamp) > '2022-10-25' 
-                GROUP BY 
-                    applications.opportunity_reference_id
-            ) AS applications ON opportunity_channels.opportunity_reference_id = applications.opportunity_reference_id
+            opportunity_candidates.opportunity_id AS 'ID',
+            min(opportunity_candidates.interested) AS 'first_app_date'
+        FROM 
+            opportunity_candidates
+            LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
+            LEFT JOIN tracking_codes ON tracking_code_candidates.tracking_code_id = tracking_codes.id
         WHERE
-            opportunity_channels.channel = 'EXTERNAL_SOURCING'
-            AND date(opportunity_channels.created) > '2022-10-25' 
-            AND TIMESTAMPDIFF(MINUTE,opportunity_channels.created,applications.first_application) >= 10
+            opportunity_candidates.interested IS NOT NULL
+            AND (tracking_codes.utm_medium = 'rc_src'
+                    OR tracking_codes.utm_medium = 'rc_src_trxx_inv')
+            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
-            opportunity_channels.opportunity_reference_id
-    ) AS sourcing ON opportunity.ref_id = sourcing.opportunity_reference_id
+            opportunity_candidates.opportunity_id
+    ) AS src_applications ON opportunities.ID = src_applications.ID
     LEFT JOIN (
         SELECT
-            opportunity_channels.opportunity_reference_id,
-            date(applications.first_application) AS syn_first_app,
-            min(TIMESTAMPDIFF(MINUTE,opportunity_channels.created,applications.first_application)) AS syn_min_diff
-        FROM
-            opportunity_channels
-            INNER JOIN (
-            SELECT 
-                    applications.opportunity_reference_id,
-                    min(applications.timestamp) AS first_application
-                FROM 
-                    applications
-                WHERE 
-                    (applications.utm_medium = 'rc_syn'
-                        OR applications.utm_medium = 'syn'
-                        OR applications.utm_medium = 'rc_syn_trrx_inv')
-                    AND date(applications.timestamp) > '2022-10-25' 
-                GROUP BY 
-                    applications.opportunity_reference_id
-            ) AS applications ON opportunity_channels.opportunity_reference_id = applications.opportunity_reference_id
+            opportunity_candidates.opportunity_id AS 'ID',
+            min(opportunity_candidates.interested) AS 'first_app_date'
+        FROM 
+            opportunity_candidates
+            LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
+            LEFT JOIN tracking_codes ON tracking_code_candidates.tracking_code_id = tracking_codes.id
         WHERE
-            opportunity_channels.channel = 'EXTERNAL_NETWORKS'
-            AND date(opportunity_channels.created) > '2022-10-25' 
-            AND TIMESTAMPDIFF(MINUTE,opportunity_channels.created,applications.first_application) >= 10
+            opportunity_candidates.interested IS NOT NULL
+            AND (tracking_codes.utm_medium = 'syn'
+                    OR tracking_codes.utm_medium = 'rc_syn'
+                    OR tracking_codes.utm_medium = 'rc_syn_trrx_inv')
+            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
-            opportunity_channels.opportunity_reference_id
-    ) AS syndication ON opportunity.ref_id = syndication.opportunity_reference_id
+            opportunity_candidates.opportunity_id
+    ) AS syn_applications ON opportunities.ID = syn_applications.ID
     LEFT JOIN (
         SELECT
-            opportunity_channels.opportunity_reference_id,
-            date(applications.first_application) AS paid_syn_first_app,
-            min(TIMESTAMPDIFF(MINUTE,opportunity_channels.created,applications.first_application)) AS paid_syn_min_diff
-        FROM
-            opportunity_channels
-            INNER JOIN (
-                SELECT 
-                    applications.opportunity_reference_id,
-                    min(applications.timestamp) AS first_application
-                FROM 
-                    applications
-                WHERE 
-                    (applications.utm_medium = 'rc_syn_paid'
-                        OR applications.utm_medium = 'syn_paid'
-                        OR applications.utm_medium = 'rc_syn_paid_trrx_inv')
-                    AND date(applications.timestamp) > '2022-10-25' 
-                GROUP BY 
-                    applications.opportunity_reference_id
-            ) AS applications ON opportunity_channels.opportunity_reference_id = applications.opportunity_reference_id
+            opportunity_candidates.opportunity_id AS 'ID',
+            min(opportunity_candidates.interested) AS 'first_app_date'
+        FROM 
+            opportunity_candidates
+            LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
+            LEFT JOIN tracking_codes ON tracking_code_candidates.tracking_code_id = tracking_codes.id
         WHERE
-            opportunity_channels.channel = 'PAID_EXTERNAL_NETWORK'
-            AND date(opportunity_channels.created) > '2022-10-25' 
-            AND TIMESTAMPDIFF(MINUTE,opportunity_channels.created,applications.first_application) >= 10
+            opportunity_candidates.interested IS NOT NULL
+            AND (tracking_codes.utm_medium = 'syn_paid'
+                    OR tracking_codes.utm_medium = 'rc_syn_paid'
+                    OR tracking_codes.utm_medium = 'rc_syn_paid_trxx_inv')
+            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
-            opportunity_channels.opportunity_reference_id
-    ) AS paid_syndication ON opportunity.ref_id = paid_syndication.opportunity_reference_id
+            opportunity_candidates.opportunity_id
+    ) AS paid_syn_applications ON opportunities.ID = paid_syn_applications.ID
+    LEFT JOIN (
+        SELECT
+            opportunity_candidates.opportunity_id AS 'ID',
+            min(opportunity_candidates.interested) AS 'first_app_date'
+        FROM 
+            opportunity_candidates
+            LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
+            LEFT JOIN tracking_codes ON tracking_code_candidates.tracking_code_id = tracking_codes.id
+        WHERE
+            opportunity_candidates.interested IS NOT NULL
+            AND (tracking_codes.utm_medium = 'syn_paid'
+                    OR tracking_codes.utm_medium = 'rc_syn_paid'
+                    OR tracking_codes.utm_medium = 'rc_syn_paid_trxx_inv'
+                    OR tracking_codes.utm_medium = 'syn'
+                    OR tracking_codes.utm_medium = 'rc_syn'
+                    OR tracking_codes.utm_medium = 'rc_syn_trrx_inv')
+            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
+        GROUP BY
+            opportunity_candidates.opportunity_id
+    ) AS all_syn_applications ON opportunities.ID = all_syn_applications.ID
+WHERE
+    opportunities.review = 'approved'
+    AND opportunities.active = TRUE
+    AND opportunities.candidate_recruiter_person_id IS NOT NULL
