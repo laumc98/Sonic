@@ -7,4 +7,3 @@ from
     left join term_types on terms.id = term_types.term_id
 where
     terms.status = 'APPROVED'
-    and term_types.type = 'SKILL'
