@@ -5,3 +5,5 @@ select
     proficiency as 'Proficiency'
 from
     opportunity_strengths
+where 
+    opportunity_strengths.active = True
