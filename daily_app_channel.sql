@@ -3,6 +3,7 @@ SELECT
     date(opportunity_candidates.interested) AS application_date,
     opportunities.id AS ID,
     tracking_codes.utm_medium AS utm_medium, 
+    tracking_codes.utm_source AS utm_source,
     count(*) AS applications
 FROM 
     opportunity_candidates
@@ -12,8 +13,9 @@ FROM
 WHERE 
     opportunity_candidates.interested IS NOT NULL 
     AND opportunities.review = 'approved'
-    AND DATE(opportunity_candidates.interested) > date(date_add(now(6), INTERVAL -1 month))
+    AND DATE(opportunity_candidates.interested) > date(date_add(now(6), INTERVAL -3 month))
 GROUP BY 
     date(opportunity_candidates.interested),
     opportunities.id,
-    tracking_codes.utm_medium
+    tracking_codes.utm_medium,
+    tracking_codes.utm_source
