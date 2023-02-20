@@ -16,6 +16,6 @@ WHERE
             people.subject_identifier IS NULL
             OR people.subject_identifier != people.gg_id
         )
-        #AND date(notifications.sent_at) >= '2023-02-14'
+        AND TRIM('"' FROM JSON_EXTRACT(notifications.context, '$.utmMedium')) = 'rc_ccg'
         AND people.name not like '%test%'
     )
