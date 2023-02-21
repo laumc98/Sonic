@@ -19,7 +19,6 @@ FROM
             opportunity_candidates.interested IS NOT NULL
             AND (tracking_codes.utm_medium = 'rc_src'
                     OR tracking_codes.utm_medium = 'rc_src_trxx_inv')
-            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
             opportunity_candidates.opportunity_id
     ) AS src_applications ON opportunities.ID = src_applications.ID
@@ -36,7 +35,6 @@ FROM
             AND (tracking_codes.utm_medium = 'syn'
                     OR tracking_codes.utm_medium = 'rc_syn'
                     OR tracking_codes.utm_medium = 'rc_syn_trrx_inv')
-            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
             opportunity_candidates.opportunity_id
     ) AS syn_applications ON opportunities.ID = syn_applications.ID
@@ -53,7 +51,6 @@ FROM
             AND (tracking_codes.utm_medium = 'syn_paid'
                     OR tracking_codes.utm_medium = 'rc_syn_paid'
                     OR tracking_codes.utm_medium = 'rc_syn_paid_trxx_inv')
-            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
             opportunity_candidates.opportunity_id
     ) AS paid_syn_applications ON opportunities.ID = paid_syn_applications.ID
@@ -73,7 +70,6 @@ FROM
                     OR tracking_codes.utm_medium = 'syn'
                     OR tracking_codes.utm_medium = 'rc_syn'
                     OR tracking_codes.utm_medium = 'rc_syn_trrx_inv')
-            AND tracking_codes.utm_campaign IN ('amdm','mcog','dffa','czp','jdpb','dmc','nsr','mmor')
         GROUP BY
             opportunity_candidates.opportunity_id
     ) AS all_syn_applications ON opportunities.ID = all_syn_applications.ID
