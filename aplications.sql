@@ -42,5 +42,6 @@ FROM opportunity_candidates
     LEFT JOIN opportunities on opportunities.id = opportunity_candidates.opportunity_id
 WHERE 
     opportunity_candidates.interested is not null
+    AND opportunity_candidates.application_step is not null
 GROUP BY ID
 ORDER BY ID desc

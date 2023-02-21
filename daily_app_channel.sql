@@ -11,7 +11,8 @@ FROM
     LEFT JOIN tracking_code_candidates ON opportunity_candidates.id = tracking_code_candidates.candidate_id
     LEFT JOIN tracking_codes ON tracking_code_candidates.tracking_code_id = tracking_codes.id
 WHERE 
-    opportunity_candidates.interested IS NOT NULL 
+    opportunity_candidates.interested IS NOT NULL
+    AND opportunity_candidates.application_step IS NOT NULL
     AND opportunities.review = 'approved'
     AND DATE(opportunity_candidates.interested) > date(date_add(now(6), INTERVAL -3 month))
 GROUP BY 
