@@ -2,6 +2,7 @@
 SELECT 
     date(opportunity_candidates.interested) AS application_date,
     opportunities.id,
+    opportunities.fulfillment,
     tracking_codes.utm_medium,
     count(distinct opportunity_candidates.id) AS pending_review
 FROM
@@ -22,4 +23,5 @@ WHERE
 GROUP BY
     application_date,
     opportunities.id,
+    opportunities.fulfillment,
     tracking_codes.utm_medium
