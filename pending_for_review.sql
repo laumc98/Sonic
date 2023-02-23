@@ -1,5 +1,6 @@
 /* AA : Sonic : # of pending for review users by utm: prod */ 
 SELECT 
+    date(opportunity_candidates.interested) AS application_date,
     opportunities.id,
     tracking_codes.utm_medium,
     count(distinct opportunity_candidates.id) AS pending_review
@@ -17,6 +18,7 @@ WHERE
     AND member_evaluations.not_interested IS NULL
     AND opportunities.review = 'approved'
     AND DATE(opportunities.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
-GROUP BY 
+GROUP BY
+    application_date,
     opportunities.id,
     tracking_codes.utm_medium

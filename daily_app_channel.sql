@@ -4,7 +4,7 @@ SELECT
     opportunities.id AS ID,
     tracking_codes.utm_medium AS utm_medium, 
     tracking_codes.utm_source AS utm_source,
-    count(*) AS applications
+    count(distinct opportunity_candidates.id) AS applications
 FROM 
     opportunity_candidates
     INNER JOIN opportunities ON opportunity_candidates.opportunity_id = opportunities.id
