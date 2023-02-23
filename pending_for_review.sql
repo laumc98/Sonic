@@ -18,6 +18,7 @@ WHERE
     AND member_evaluations.not_interested IS NULL
     AND opportunities.review = 'approved'
     AND DATE(opportunities.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
+    AND DATE(opportunity_candidates.interested) > date(date_add(now(6), INTERVAL -1 year))
 GROUP BY
     application_date,
     opportunities.id,
