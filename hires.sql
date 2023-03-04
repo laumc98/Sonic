@@ -12,6 +12,7 @@ FROM
             `opportunity_candidates`.`opportunity_id` AS `opportunity_id`,
             `Tracking Codes`.`utm_medium` AS `Tracking Codes__utm_medium`,
             `Opportunities`.`remote` AS `Opportunities__remote`,
+            `Opportunities`.`last_reviewed`,
             `Opportunities`.`fulfillment` AS `Opportunities__fulfillment`
         FROM
             `opportunity_candidates`
@@ -38,6 +39,7 @@ WHERE
         `source`.`hiring_date` IS NOT NULL
         AND `source`.`hiring_date` > "2021-1-1"
         AND `source`.`hiring_date` < date(date_add(now(6), INTERVAL 1 day))
+        AND DATE(`source`.`last_reviewed`) > date(date_add(now(6), INTERVAL -1 year))
     )
 GROUP BY
     `source`.`Tracking Codes__utm_medium`,

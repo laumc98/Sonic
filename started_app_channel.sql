@@ -13,7 +13,7 @@ from
     left join people on opportunity_members.person_id = people.id
     left join person_flags on people.id = person_flags.person_id
 where
-    date(opportunity_candidates.created) > "2021-7-18"
+    date(opportunity_candidates.created) > date(date_add(now(6), INTERVAL -1 year))
     AND o.objective not like '***%'
     and tc.utm_medium in (
         'srh_jobs',

@@ -8,3 +8,5 @@ SELECT
     people.phone
 FROM 
     people
+WHERE
+    people.name not like '**test'

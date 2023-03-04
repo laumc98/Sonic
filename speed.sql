@@ -77,3 +77,6 @@ WHERE
     opportunities.review = 'approved'
     AND opportunities.active = TRUE
     AND opportunities.candidate_recruiter_person_id IS NOT NULL
+    AND DATE(opportunities.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
+GROUP BY 
+    opportunities.id
