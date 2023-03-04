@@ -7,6 +7,6 @@ from
    inner join opportunities o on op.opportunity_id = o.id
    inner join people p on op.person_id = p.id
 where
-   DATE(opportunities.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
+   DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
 group by
    opportunity_id
