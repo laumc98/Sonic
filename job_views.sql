@@ -13,5 +13,8 @@ where
     and pf.opportunity_crawler = false
     and v.target_type = 'opportunity'
     and DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
+    and o.review = 'approved'
+    AND o.objective not like '**%'
+    AND o.active = TRUE
 group by
-    1
+    o.id
