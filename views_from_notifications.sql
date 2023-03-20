@@ -35,6 +35,8 @@ WHERE
             OR "atomic"."events"."mkt_medium" = 'rc_syn_trrx_inv'
             OR "atomic"."events"."mkt_medium" = 'syn'
             OR "atomic"."events"."mkt_medium" = 'shr_ts'
+            OR "atomic"."events"."mkt_medium" = 'syn_rqt'
+            OR "atomic"."events"."mkt_medium" = 'rc_syn_rqt'
         )
     )
 GROUP BY

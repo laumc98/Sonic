@@ -36,6 +36,7 @@ where
         'trr_webinars',
         'google_jobs',
         'syn_rqt',
+        'rc_syn_rqt',
         'shr_ts',
         'ref_ts',
         'ref_ptn',

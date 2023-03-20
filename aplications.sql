@@ -29,6 +29,7 @@ SELECT
    sum(case when utm_medium = 'ref_cdt' then 1 else 0 end) as 'Referrals from candidates',
    sum(case when utm_medium = 'ref_vst_imp' then 1 else 0 end) as 'Referrals from visitors that share a job outside Torre (implicitly)',
    sum(case when utm_medium = 'syn_rqt' then 1 else 0 end) as 'Syndication as requested',
+   sum(case when utm_medium = 'rc_syn_rqt' then 1 else 0 end) as 'Automatic syndication as requested',
    sum(case when utm_medium = 'trr_webinars' then 1 else 0 end) as 'Webinars Torre Access',
    sum(case when utm_medium = 'syn_paid' then 1 else 0 end) as 'Paid syn manual',
    sum(case when utm_medium = 'rc_syn_paid' then 1 else 0 end) as 'Paid syn automatic',

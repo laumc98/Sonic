@@ -1,9 +1,9 @@
 /* AA : SONIC : mutual m by candidate recruiters : prod */ 
 SELECT
     date(mutual_matches.created) AS 'mutualm_date',
-    mutualm_date.name AS 'Candidate Recruiter',
-    mutualm_date.utm_medium,
-    mutualm_date.id AS 'ID',
+    mutual_matches.name AS 'Candidate Recruiter',
+    mutual_matches.utm_medium,
+    mutual_matches.id AS 'ID',
     count(*) AS 'Mutual matches'
 FROM
 (
@@ -47,6 +47,6 @@ FROM
 ) AS mutual_matches
 GROUP BY 
     date(mutual_matches.created),
-    mutualm_date.name,
-    mutualm_date.utm_medium,
-    mutualm_date.id
+    mutual_matches.name,
+    mutual_matches.utm_medium,
+    mutual_matches.id
