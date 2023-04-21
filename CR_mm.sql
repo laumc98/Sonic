@@ -45,7 +45,7 @@ FROM
             OR tc.utm_campaign = 'MER' 
             OR tc.utm_campaign = 'ACMP' 
         )
-        AND tc.utm_medium IN ('src','rc_src','rc_src_trxx_inv','syn','rc_syn','rc_syn_trrx_inv','syn_paid','rc_syn_paid')
+        AND tc.utm_medium IN ('src','rc_src','rc_src_trxx_inv','syn','rc_syn','rc_syn_trrx_inv','syn_paid','rc_syn_paid','rc_syn_paid_trrx_inv')
     GROUP BY 
         occh.candidate_id
 ) AS mutual_matches
