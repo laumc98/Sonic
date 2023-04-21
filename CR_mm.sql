@@ -1,7 +1,7 @@
 /* AA : SONIC : mutual m by candidate recruiters : prod */ 
 SELECT
     date(mutual_matches.created) AS 'mutualm_date',
-    mutual_matches.name AS 'Candidate Recruiter',
+    mutual_matches.utm_campaign AS 'cr_campaign',
     mutual_matches.utm_medium,
     mutual_matches.id AS 'ID',
     count(*) AS 'Mutual matches'
@@ -10,7 +10,7 @@ FROM
     SELECT
         occh.candidate_id,
         min(occh.created) AS 'created',
-        p.name,
+        tc.utm_campaign,
         tc.utm_medium,
         o.id
     FROM
@@ -24,7 +24,6 @@ FROM
     WHERE
         oc.name = 'mutual matches'
         AND occh.created >= '2022-10-25'
-        AND o.candidate_recruiter_person_id IS NOT NULL
         AND (tc.utm_campaign = 'amdm'
             OR tc.utm_campaign = 'mcog'
             OR tc.utm_campaign = 'dffa'
@@ -51,6 +50,6 @@ FROM
 ) AS mutual_matches
 GROUP BY 
     date(mutual_matches.created),
-    mutual_matches.name,
+    mutual_matches.cr_campaign,
     mutual_matches.utm_medium,
     mutual_matches.id
