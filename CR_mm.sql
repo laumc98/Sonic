@@ -50,6 +50,6 @@ FROM
 ) AS mutual_matches
 GROUP BY 
     date(mutual_matches.created),
-    mutual_matches.cr_campaign,
+    mutual_matches.utm_campaign,
     mutual_matches.utm_medium,
     mutual_matches.id
