@@ -11,7 +11,7 @@ FROM
         FROM
             applications
         WHERE
-            applications.match_score > 0.85
+            applications.match_score > 0.80
             AND (
                 applications.filters_passed = true
                 OR applications.filters_passed IS NULL
@@ -30,7 +30,7 @@ FROM
                 AND disqualifications.opportunity_reference_id = applications.opportunity_reference_id
             )
         WHERE
-            applications.match_score > 0.85
+            applications.match_score > 0.80
             AND (
                 applications.filters_passed = true
                 OR applications.filters_passed IS NULL
