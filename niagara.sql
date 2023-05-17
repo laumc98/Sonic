@@ -29,6 +29,7 @@ SELECT
     `thvtat`.`apps_since_update` as `torre_handled_applications_since_update`,
     `thvtat`.`torre_handled_views_to_application_ratio_since_update`,
     `s`.`current_state` as `current_state`,
+    `previous_state`.`last_previous_state` as 'last_previous_state',
     `s`.`reason_changed`,
     `s`.`last_state_transition` as `last_state_transition`
 FROM
@@ -146,6 +147,18 @@ FROM
         WHERE
             `state_transition`.`active` = TRUE
     ) s on `opportunity`.`ref_id` = `s`.`opportunity_reference_id`
+    LEFT JOIN (
+        SELECT
+            `state_transition`.`opportunity_reference_id` AS `opportunity_reference_id`,
+            `state_transition`.`current_state` AS `last_previous_state`,
+            MAX(`state_transition`.`timestamp`) AS `last_previous_state_date`
+        FROM
+            `state_transition`
+        WHERE
+            `state_transition`.`active` = FALSE
+        GROUP BY    
+            `state_transition`.`opportunity_reference_id`
+    ) previous_state on `opportunity`.`ref_id` = `previous_state`.`opportunity_reference_id`
     LEFT JOIN (
         SELECT
             `views`.`opportunity_reference_id` AS `opportunity_reference_id`,
