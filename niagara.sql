@@ -150,7 +150,7 @@ FROM
     LEFT JOIN (
         SELECT
             `state_transition`.`opportunity_reference_id`,
-            `state_transition`.`current_state` AS last_previous_state,
+            `state_transition`.`current_state` AS `last_previous_state`,
             `state_transition`.`timestamp`
         FROM
             `state_transition`
@@ -159,7 +159,7 @@ FROM
                     `state_transition`.`opportunity_reference_id`,
                     MAX(`state_transition`.`timestamp`) AS `max_timestamp`
                 FROM
-                    `state_transition`.`state_transition`
+                    `state_transition`
                 WHERE
                     `state_transition`.`active` = FALSE
                 GROUP BY
