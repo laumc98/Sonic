@@ -149,14 +149,25 @@ FROM
     ) s on `opportunity`.`ref_id` = `s`.`opportunity_reference_id`
     LEFT JOIN (
         SELECT
-            `state_transition`.`opportunity_reference_id` AS `opportunity_reference_id`,
-            `state_transition`.`current_state` AS `last_previous_state`,
-            MAX(`state_transition`.`timestamp`) AS `last_previous_state_date`
+            `state_transition`.`opportunity_reference_id`,
+            `state_transition`.`current_state` AS last_previous_state,
+            `state_transition`.`timestamp`
         FROM
             `state_transition`
-        WHERE
+            INNER JOIN (
+                SELECT
+                    `state_transition`.`opportunity_reference_id`,
+                    MAX(`state_transition`.`timestamp`) AS `max_timestamp`
+                FROM
+                    `state_transition`.`state_transition`
+                WHERE
+                    `state_transition`.`active` = FALSE
+                GROUP BY
+                    `state_transition`.`opportunity_reference_id`
+            ) subq ON `state_transition`.`opportunity_reference_id` = `subq`.`opportunity_reference_id` AND `state_transition`.`timestamp` = `subq`.`max_timestamp`
+        WHERE 
             `state_transition`.`active` = FALSE
-        GROUP BY    
+        GROUP BY 
             `state_transition`.`opportunity_reference_id`
     ) previous_state on `opportunity`.`ref_id` = `previous_state`.`opportunity_reference_id`
     LEFT JOIN (
