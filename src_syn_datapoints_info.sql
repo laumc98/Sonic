@@ -1,9 +1,9 @@
 /* AA : Sonic : sourcing & syndication info from data points: prod */
 SELECT
     o.opportunity_id AS 'Alfa ID',
-    REGEXP_SUBSTR(src_datapoint.comments, '(?<=Number of connections found: \[)\d+(?=\])') AS src_connections_found,
-    REGEXP_SUBSTR(src_datapoint.comments, '(?<=Number of connections needed: \[)\d+(?=\])') AS src_connections_needed,
-    REGEXP_SUBSTR(syn_datapoint.comments, '(?<=Applications needed: \[)\d+(?=\])') AS syn_applications_needed
+    REGEXP_SUBSTR(src_datapoint.comments, '(?<=Number of connections found: )\\d+(\\.\\d+)?') AS src_connections_found,
+    REGEXP_SUBSTR(src_datapoint.comments, '(?<=Number of connections needed: )\\d+(\\.\\d+)?') AS src_connections_needed,
+    REGEXP_SUBSTR(syn_datapoint.comments, '(?<=Applications needed: )\\d+(\\.\\d+)?') AS syn_applications_needed
 FROM 
     opportunities o
     LEFT JOIN (
