@@ -20,7 +20,7 @@ FROM
             COALESCE(NULLIF(oc.max_amount,0), oc.min_amount) AS value
         FROM
             opportunities o
-        INNER JOIN opportunity_compensations oc ON o.id = oc.opportunity_id AND oc.active
+            INNER JOIN opportunity_compensations oc ON o.id = oc.opportunity_id AND oc.active
         WHERE
             o.id NOT IN (1861230, 1316677)
             AND o.id NOT IN (
