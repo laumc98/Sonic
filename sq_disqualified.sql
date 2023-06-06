@@ -20,7 +20,7 @@ FROM
         SELECT
             `opportunity_candidates`.`id`,
             `opportunity_questions`.`opportunity_id` AS `Opportunity_ID`,
-            max(`opportunity_questions`.`rank`) AS `rank`,
+            max(`opportunity_questions`.`rank_value`) AS `rank`,
             `people`.`name`,
             `people`.`username`,
             `member_evaluations`.`not_interested`,
@@ -46,7 +46,7 @@ FROM
             `opportunity_candidates`.`id`,
             `opportunity_candidates`.`opportunity_id`
     ) AS `max_rank`
-    INNER JOIN `opportunity_questions` ON (`max_rank`.`rank` = `opportunity_questions`.`rank` AND `max_rank`.`Opportunity_ID` = `opportunity_questions`.`opportunity_id`) AND `opportunity_questions`.`active` IS TRUE
+    INNER JOIN `opportunity_questions` ON (`max_rank`.`rank` = `opportunity_questions`.`rank_value` AND `max_rank`.`Opportunity_ID` = `opportunity_questions`.`opportunity_id`) AND `opportunity_questions`.`active` IS TRUE
     LEFT JOIN `questions` ON `opportunity_questions`.`question_id` = `questions`.`id`
     LEFT JOIN `opportunity_candidate_responses` ON (`max_rank`.`id` = `opportunity_candidate_responses`.`candidate_id` AND `opportunity_questions`.`question_id` = `opportunity_candidate_responses`.`question_id`) AND `opportunity_candidate_responses`.`active` IS TRUE
     LEFT JOIN `tracking_code_candidates`  ON `max_rank`.`id` = `tracking_code_candidates`.`candidate_id`
