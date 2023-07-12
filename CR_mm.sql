@@ -43,7 +43,8 @@ FROM
             OR tc.utm_campaign = 'dgv'
             OR tc.utm_campaign = 'MER' 
             OR tc.utm_campaign = 'ACMP'
-            OR tc.utm_campaign = 'dgc'  
+            OR tc.utm_campaign = 'dgc' 
+            OR tc.utm_campaign = 'fcr' 
         )
         AND tc.utm_medium IN ('src','rc_src','rc_src_trxx_inv','syn','rc_syn','rc_syn_trrx_inv','syn_paid','rc_syn_paid','rc_syn_paid_trrx_inv')
     GROUP BY 
