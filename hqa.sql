@@ -19,7 +19,7 @@ FROM
         GROUP BY
             applications.opportunity_reference_id
     ) AS hqa_total
-    CROSS JOIN (
+    LEFT JOIN (
         SELECT
             disqualifications.opportunity_reference_id AS 'Alfa_ID',
             count(distinct disqualifications.gg_id) AS 'HQA_Disqualified'
