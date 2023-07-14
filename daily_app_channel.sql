@@ -16,7 +16,6 @@ WHERE
     opportunity_candidates.application_step IS NOT NULL
     AND opportunities.review = 'approved'
     AND DATE(opportunity_candidates.created) >= date(date_add(now(6), INTERVAL -3 month))
-    AND opportunities.id = 1884566
 GROUP BY 
     date(opportunity_candidates.created),
     date(opportunity_candidates.interested),
