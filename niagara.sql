@@ -25,6 +25,7 @@ SELECT
     `atm`.`hqa_to_mm_ratio`,
     `hqtmmst`.`hqa_to_mm_ratio_since_update`,
     `vta`.`torre_handled_views_to_application_ratio`,
+    `vta`.`torre_alerts_views_to_application_ratio`,
     `thvtat`.`views_since_update` as `torre_handled_views_since_update`,
     `thvtat`.`apps_since_update` as `torre_handled_applications_since_update`,
     `thvtat`.`torre_handled_views_to_application_ratio_since_update`,
@@ -189,6 +190,23 @@ FROM
         GROUP BY
             `views`.`opportunity_reference_id`
     ) vta on `opportunity`.`ref_id` = `vta`.`opportunity_reference_id`
+    LEFT JOIN (
+        SELECT
+            `views`.`opportunity_reference_id` AS `opportunity_reference_id`,
+            count(`Applications`.`id`) / count(`views`.`opportunity_reference_id`) as `torre_alerts_views_to_application_ratio`
+        FROM
+            `views`
+            LEFT JOIN `applications` `Applications` ON (
+                `views`.`gg_id` = `Applications`.`gg_id`
+                AND `views`.`opportunity_reference_id` = `Applications`.`opportunity_reference_id`
+            )
+        WHERE
+            (
+                `views`.`utm_medium` = 'ja_mtc'
+            )
+        GROUP BY
+            `views`.`opportunity_reference_id`
+    ) vta_2 on `opportunity`.`ref_id` = `vta_2`.`opportunity_reference_id`
     LEFT JOIN (
         SELECT
             `applications`.`opportunity_reference_id` AS `opportunity_reference_id`,
