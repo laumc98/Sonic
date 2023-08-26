@@ -25,7 +25,7 @@ SELECT
     `atm`.`hqa_to_mm_ratio`,
     `hqtmmst`.`hqa_to_mm_ratio_since_update`,
     `vta`.`torre_handled_views_to_application_ratio`,
-    `vta`.`torre_alerts_views_to_application_ratio`,
+    `vta_2`.`torre_alerts_views_to_application_ratio`,
     `thvtat`.`views_since_update` as `torre_handled_views_since_update`,
     `thvtat`.`apps_since_update` as `torre_handled_applications_since_update`,
     `thvtat`.`torre_handled_views_to_application_ratio_since_update`,
