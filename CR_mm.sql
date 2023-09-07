@@ -46,6 +46,7 @@ FROM
             OR tc.utm_campaign = 'dgc' 
             OR tc.utm_campaign = 'fcr' 
             OR tc.utm_campaign = 'mes' 
+            OR tc.utm_campaign = 'mfo'
         )
         AND tc.utm_medium IN ('src','rc_src','rc_src_trxx_inv','syn','rc_syn','rc_syn_trrx_inv','syn_paid','rc_syn_paid','rc_syn_paid_trrx_inv')
     GROUP BY 
