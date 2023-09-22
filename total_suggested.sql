@@ -9,6 +9,7 @@ where
    DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
    AND o.objective not like '**%'
    AND o.active = TRUE
+   AND o.crawled = FALSE 
    AND o.review = 'approved'
 group by
    op.opportunity_id

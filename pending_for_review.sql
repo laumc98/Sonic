@@ -18,6 +18,7 @@ WHERE
     AND opportunity_candidate_column_history.created IS NULL
     AND member_evaluations.not_interested IS NULL
     AND opportunities.review = 'approved'
+    AND opportunities.crawled = FALSE 
     AND DATE(opportunities.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
     AND DATE(opportunity_candidates.interested) > date(date_add(now(6), INTERVAL -1 year))
 GROUP BY

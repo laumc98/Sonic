@@ -13,6 +13,7 @@ WHERE
     oc.name = 'mutual matches'
     AND occh.created >= '2021-01-01'
     AND o.objective NOT LIKE '**%'
+    AND o.crawled = FALSE 
     AND o.id IN (
         SELECT
             DISTINCT o.id AS opportunity_id

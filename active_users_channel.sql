@@ -28,6 +28,7 @@ WHERE
     AND o.objective not like '**%'
     AND o.review = 'approved'
     AND o.status <> 'opening-soon'
+    AND o.crawled = FALSE 
     AND o.active = TRUE
     AND DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
 GROUP BY

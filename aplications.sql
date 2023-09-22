@@ -45,5 +45,6 @@ WHERE
     opportunity_candidates.interested is not null
     AND opportunity_candidates.application_step is not null
     AND DATE(opportunities.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
+    AND opportunities.crawled = FALSE 
 GROUP BY ID
 ORDER BY ID desc

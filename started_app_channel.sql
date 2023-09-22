@@ -15,6 +15,7 @@ from
 where
     date(opportunity_candidates.created) > date(date_add(now(6), INTERVAL -1 year))
     AND o.objective not like '***%'
+    AND o.crawled = FALSE 
     and tc.utm_medium in (
         'srh_jobs',
         'ja_mtc',

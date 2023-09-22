@@ -41,6 +41,7 @@ FROM
 WHERE 
     date(all_hires.hire_date) > "2021-1-1"
     AND date(coalesce(null, o.first_reviewed, o.last_reviewed)) > date(date_add(now(6), INTERVAL -1 year))
+    AND o.crawled = FALSE 
 GROUP BY 
     o.id,
     tc.utm_medium

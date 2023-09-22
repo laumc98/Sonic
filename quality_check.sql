@@ -28,5 +28,6 @@ WHERE
     `Opportunity Candidates - Candidate`.`interested` IS NOT NULL
     AND (`Opportunity Candidates - Candidate`.`interested` >= date(date_add(now(6), INTERVAL -60 day))
             AND `Opportunity Candidates - Candidate`.`interested` < date(date_add(now(6), INTERVAL 1 day)))
+    AND `opportunities`.`crawled` = FALSE 
 GROUP BY `Opportunity Candidates - Candidate`.`id`,`Opportunity Candidates - Candidate`.`opportunity_id`
 ORDER BY `Opportunity Candidates - Candidate`.`id` DESC

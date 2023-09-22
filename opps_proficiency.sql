@@ -49,6 +49,7 @@ FROM
             AND o.objective NOT LIKE '**%'
             AND date(coalesce(null, o.first_reviewed, o.last_reviewed)) >= date(date_add(now(6), INTERVAL -1 year))
             AND o.review = 'approved'
+            AND o.crawled = FALSE 
         GROUP BY
             o.id
     ) g

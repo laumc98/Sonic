@@ -13,5 +13,6 @@ where
     and o.objective not like '***%'
     and o.review = 'approved'
     AND o.active = TRUE
+    AND o.crawled = FALSE 
 group by
     o.id
