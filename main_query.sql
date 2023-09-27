@@ -125,6 +125,7 @@ WHERE true
     AND DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
     AND o.active = TRUE
     AND o.crawled = FALSE 
+    AND o.published = TRUE
 
 GROUP BY o.id
 ORDER BY o.created desc;
