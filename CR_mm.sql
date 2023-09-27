@@ -47,6 +47,16 @@ FROM
             OR tc.utm_campaign = 'fcr' 
             OR tc.utm_campaign = 'mes' 
             OR tc.utm_campaign = 'mfo'
+            OR tc.utm_campaign = 'smfp'
+            OR tc.utm_campaign = 'gebj'
+            OR tc.utm_campaign = 'aamf'
+            OR tc.utm_campaign = 'eb'
+            OR tc.utm_campaign = 'kglm'
+            OR tc.utm_campaign = 'sm'
+            OR tc.utm_campaign = 'brc'
+            OR tc.utm_campaign = 'vaio'
+            OR tc.utm_campaign = 'exrm'
+            OR tc.utm_campaign = 'jsmn'
         )
         AND tc.utm_medium IN ('src','rc_src','rc_src_trxx_inv','syn','rc_syn','rc_syn_trrx_inv','syn_paid','rc_syn_paid','rc_syn_paid_trrx_inv')
     GROUP BY 
