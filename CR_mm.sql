@@ -58,6 +58,10 @@ FROM
             OR tc.utm_campaign = 'vaio'
             OR tc.utm_campaign = 'exrm'
             OR tc.utm_campaign = 'jsmn'
+            OR tc.utm_campaign = 'lfas'
+            OR tc.utm_campaign = 'malm'
+            OR tc.utm_campaign = 'lbmp'
+            OR tc.utm_campaign = 'capi'
         )
         AND tc.utm_medium IN ('src','rc_src','rc_src_trxx_inv','syn','rc_syn','rc_syn_trrx_inv','syn_paid','rc_syn_paid','rc_syn_paid_trrx_inv')
     GROUP BY 
