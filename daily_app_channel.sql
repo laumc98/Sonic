@@ -16,7 +16,8 @@ WHERE
     opportunity_candidates.application_step IS NOT NULL
     AND opportunities.review = 'approved'
     AND opportunities.crawled = FALSE 
-    AND DATE(opportunity_candidates.created) >= date(date_add(now(6), INTERVAL -3 month))
+    AND (DATE(opportunity_candidates.created) >= date(date_add(now(6), INTERVAL -3 month))
+        OR DATE(opportunity_candidates.interested) >= date(date_add(now(6), INTERVAL -3 month)))
 GROUP BY 
     date(opportunity_candidates.created),
     date(opportunity_candidates.interested),
