@@ -13,11 +13,7 @@ FROM
         FROM
             applications
         WHERE
-            applications.match_score > 0.80
-            AND (
-                applications.filters_passed = true
-                OR applications.filters_passed IS NULL
-            )
+            applications.filters_passed = true
         GROUP BY
             applications.opportunity_reference_id
     ) AS hqa_total
@@ -32,11 +28,7 @@ FROM
                 AND disqualifications.opportunity_reference_id = applications.opportunity_reference_id
             )
         WHERE
-            applications.match_score > 0.80
-            AND (
-                applications.filters_passed = true
-                OR applications.filters_passed IS NULL
-            )
+            applications.filters_passed = true  
         GROUP BY
             disqualifications.opportunity_reference_id
     ) AS hqa_disqualified ON hqa_total.Alfa_ID = hqa_disqualified.Alfa_ID
@@ -50,11 +42,7 @@ FROM
             LEFT JOIN mutual_matches ON (mutual_matches.gg_id = applications.gg_id AND mutual_matches.opportunity_reference_id = applications.opportunity_reference_id)
             LEFT JOIN hires ON (hires.gg_id = applications.gg_id AND hires.opportunity_reference_id = applications.opportunity_reference_id)
         WHERE
-            applications.match_score > 0.80
-            AND (
-                applications.filters_passed = true
-                OR applications.filters_passed IS NULL
-                )
+            applications.filters_passed = true
             AND disqualifications.timestamp IS NULL
             AND mutual_matches.timestamp IS NULL
             AND hires.timestamp IS NULL

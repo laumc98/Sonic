@@ -24,11 +24,7 @@ FROM
                 FROM
                     applications
                 WHERE
-                    applications.match_score > 0.85
-                    AND (
-                        applications.filters_passed = true
-                        OR applications.filters_passed IS NULL
-                    )
+                    applications.filters_passed = true
                 ORDER BY
                     applications.opportunity_reference_id,
                     applications.timestamp
