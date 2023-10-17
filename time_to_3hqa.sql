@@ -23,8 +23,13 @@ FROM
                     applications.timestamp
                 FROM
                     applications
+                    LEFT JOIN mutual_matches ON (
+                        mutual_matches.gg_id = applications.gg_id
+                        AND mutual_matches.opportunity_reference_id = applications.opportunity_reference_id
+                    )
                 WHERE
                     applications.filters_passed = true
+                    OR mutual_matches.timestamp IS NOT NULL 
                 ORDER BY
                     applications.opportunity_reference_id,
                     applications.timestamp
