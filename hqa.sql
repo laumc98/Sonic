@@ -38,17 +38,19 @@ FROM
     ) AS hqa_active ON opportunity.ref_id = hqa_active.Alfa_ID
     LEFT JOIN (
         SELECT
-            mutual_matches.opportunity_reference_id AS 'Alfa_ID',
+            applications.opportunity_reference_id AS 'Alfa_ID',
             count(*) AS 'Active_MM'
         FROM
-            mutual_matches
-            LEFT JOIN disqualifications ON (disqualifications.gg_id = mutual_matches.gg_id AND disqualifications.opportunity_reference_id = mutual_matches.opportunity_reference_id)
-            LEFT JOIN hires ON (hires.gg_id = mutual_matches.gg_id AND hires.opportunity_reference_id = mutual_matches.opportunity_reference_id)
+            applications
+            LEFT JOIN disqualifications ON (disqualifications.gg_id = applications.gg_id AND disqualifications.opportunity_reference_id = applications.opportunity_reference_id)
+            LEFT JOIN mutual_matches ON (mutual_matches.gg_id = applications.gg_id AND mutual_matches.opportunity_reference_id = applications.opportunity_reference_id)
+            LEFT JOIN hires ON (hires.gg_id = applications.gg_id AND hires.opportunity_reference_id = applications.opportunity_reference_id)
         WHERE
-            disqualifications.timestamp IS NULL
+            mutual_matches.timestamp IS NOT NULL
+            AND disqualifications.timestamp IS NULL
             AND hires.timestamp IS NULL
         GROUP BY
-            mutual_matches.opportunity_reference_id
+            applications.opportunity_reference_id
     ) AS mm_active ON opportunity.ref_id = mm_active.Alfa_ID
 WHERE 
     JSON_EXTRACT(opportunity.opportunity_snapshot, '$."crawled"') = FALSE
