@@ -1,7 +1,7 @@
 /* AA : Sonic : skills disqualified: prod */ 
 SELECT 
     member_evaluations.candidate_id, 
-    member_evaluations_reason.reason,
+    member_evaluations_reason.reason AS 'reason_2',
     member_evaluations_reason.code AS 'Skill ID'
 FROM 
     member_evaluations_reason
