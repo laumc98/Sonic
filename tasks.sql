@@ -23,5 +23,5 @@ WHERE
         FROM 
             tasks  
         WHERE 
-            tasks.completion_comment = 'Completed with manual update. Reason: inactivity.'
+            LOWER(tasks.completion_comment) LIKE '%completed with manual update.%'
     )
