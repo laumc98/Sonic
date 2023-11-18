@@ -3,8 +3,8 @@ SELECT
     opportunities.opportunity_id AS 'Alfa ID',
     IF(
         ISNULL(tasks.completed), 
-        'Requests_Not_Completed', 
-        'Requests_Completed'
+        'SRC_requests_Not_Completed', 
+        'SRC_requests_Completed'
     ) AS task_status,
     count(tasks.id) AS number_tasks
 FROM 
