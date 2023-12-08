@@ -12,8 +12,6 @@ SELECT
     (select o.timezones having Location is null) as 'Timezones',
     -- Type of service
     o.fulfillment as 'Type of service',
-    -- Remote 
-    o.remote as 'Remote',
     -- Type of job
     o.commitment_id as 'Type of job',
     -- Agreement type
