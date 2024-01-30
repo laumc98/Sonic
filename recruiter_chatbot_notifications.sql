@@ -7,5 +7,6 @@ FROM
 WHERE
     no.template like 'career-advisor-job-opportunity'
     and no.status = 'sent'
+    AND date(notifications.sent_at) >= date(date_add(now(6), INTERVAL -1 year))
 GROUP BY
     1

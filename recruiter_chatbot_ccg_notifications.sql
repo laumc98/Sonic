@@ -18,4 +18,5 @@ WHERE
         )
         AND TRIM('"' FROM JSON_EXTRACT(notifications.context, '$.utmMedium')) = 'rc_ccg'
         AND people.name not like '%test%'
+        AND date(notifications.sent_at) >= date(date_add(now(6), INTERVAL -1 year))
     )

@@ -4,9 +4,7 @@ select
     count(*) as 'views'
 from
     views v
-    inner join opportunities o on o.id = v.target_id
-    inner join opportunity_members omp on omp.opportunity_id = v.target_id and omp.poster = true
-    inner join person_flags pf on pf.person_id = omp.person_id and pf.opportunity_crawler = false
+    left join opportunities o on o.id = v.target_id
 where
     v.target_type = 'opportunity'
     and DATE(v.created) > date(date_add(now(6), INTERVAL -1 year))
@@ -14,5 +12,6 @@ where
     and o.review = 'approved'
     AND o.active = TRUE
     AND o.crawled = FALSE 
+    AND o.published = TRUE  
 group by
     o.id
