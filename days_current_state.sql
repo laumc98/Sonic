@@ -26,6 +26,7 @@ previous_states AS (
 )
 SELECT 
     active_opps.opportunity_reference_id AS 'Alfa ID',
+    previous_states.previous_state_date,
     timestampdiff(day,previous_states.previous_state_date,active_opps.timestamp) as days_in_current_state
 FROM 
     active_opps 
