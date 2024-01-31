@@ -12,7 +12,8 @@ FROM
             previous.timestamp AS previous_state_date
         FROM
             state_transition
-            LEFT JOIN (
+            INNER JOIN opportunity ON state_transition.opportunity_reference_id = opportunity.ref_id
+            INNER JOIN (
                 SELECT
                     state_transition.opportunity_reference_id,
                     state_transition.current_state,
@@ -21,8 +22,8 @@ FROM
                     state_transition
                 WHERE
                     state_transition.active = TRUE
-            ) current ON state_transition.opportunity_reference_id = current.opportunity_reference_id
-            LEFT JOIN (
+            ) current ON opportunity.ref_id = current.opportunity_reference_id
+            INNER JOIN (
                 SELECT
                     state_transition.opportunity_reference_id,
                     state_transition.current_state,
@@ -31,15 +32,10 @@ FROM
                     state_transition
                 WHERE
                     state_transition.active = FALSE
-                ORDER BY 
-                    state_transition.timestamp DESC
-            ) previous ON state_transition.opportunity_reference_id = previous.opportunity_reference_id
+            ) previous ON opportunity.ref_id = previous.opportunity_reference_id
         WHERE 
             current.current_state = 'default_active_seeking_state'
             AND current.current_state != previous.current_state
     ) AS states
-    LEFT JOIN opportunity ON states.opportunity_reference_id = opportunity.ref_id
-WHERE 
-    opportunity.ref_id IS NOT NULL
 GROUP BY 
     states.opportunity_reference_id
