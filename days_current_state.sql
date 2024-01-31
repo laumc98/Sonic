@@ -1,6 +1,6 @@
 /* AA : SONIC : days in current state : prod */ 
 SELECT
-    states.opportunity_reference_id,
+    states.opportunity_reference_id AS 'Alfa ID',
     states.current_state,
     states.current_state_date,
     states.previous_state,
