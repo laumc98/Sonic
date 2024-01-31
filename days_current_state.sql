@@ -16,6 +16,7 @@ FROM
         previous.timestamp AS previous_state_date
     FROM
         state_transition
+        INNER JOIN opportunity ON state_transition.opportunity_reference_id = opportunity.ref_id
         LEFT JOIN (
             SELECT
                 state_transition.opportunity_reference_id,
