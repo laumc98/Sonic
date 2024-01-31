@@ -1,10 +1,6 @@
 /* AA : SONIC : days in current state : prod */ 
 SELECT
     states.opportunity_reference_id AS 'Alfa ID',
-    states.current_state,
-    states.current_state_date,
-    states.previous_state,
-    MAX(states.previous_state_date) AS last_previous_state_date,
     timestampdiff(day,MAX(states.previous_state_date),states.current_state_date) as days_in_current_state
 FROM
     (
@@ -38,11 +34,12 @@ FROM
                 ORDER BY 
                     state_transition.timestamp DESC
             ) previous ON state_transition.opportunity_reference_id = previous.opportunity_reference_id
+        WHERE 
+            current.current_state = 'default_active_seeking_state'
+            AND current.current_state != previous.current_state
     ) AS states
     LEFT JOIN opportunity ON states.opportunity_reference_id = opportunity.ref_id
 WHERE 
     opportunity.ref_id IS NOT NULL
-    AND states.current_state = 'default_active_seeking_state'
-    AND states.current_state != states.previous_state
 GROUP BY 
     states.opportunity_reference_id
