@@ -25,4 +25,4 @@ WHERE
         WHERE 
             LOWER(tasks.completion_comment) LIKE '%completed with manual update.%'
     )
-    AND tasks.id NOT IN (163193, 165664,243374,246776,364527)
+    AND tasks.id NOT IN (163193, 165664,243374,246776,364527,158197)
