@@ -3,7 +3,7 @@ SELECT
     opportunity_candidates.opportunity_id AS 'ID',
     tracking_codes.utm_medium AS utm,
     tracking_codes.utm_campaign AS utm_campaign, 
-    opportunity_candidates.interested AS 'app_date'
+    min(opportunity_candidates.interested) AS 'app_date'
 FROM
     opportunity_candidates
     INNER JOIN opportunities ON opportunity_candidates.opportunity_id = opportunities.id 
