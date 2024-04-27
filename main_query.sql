@@ -1,4 +1,55 @@
 /* AA : Sonic : main query: prod */ 
+WITH 
+groupped_services AS (
+    SELECT
+        opportunity_id,
+        GROUP_CONCAT(service_code) AS services
+    FROM
+        opportunity_services
+    WHERE
+        deleted IS NULL
+    GROUP BY
+        opportunity_id
+),
+opps_services AS (
+    SELECT
+        o.id AS opportunity_id,
+        CASE
+            WHEN crawled THEN 'crawled'
+            WHEN (
+                 FIND_IN_SET('1', gs.services)>0 /* agile */
+                 OR FIND_IN_SET('7', gs.services)>0 /* staff augmentation */
+                 OR FIND_IN_SET('20', gs.services)>0 /* hunt */
+            ) THEN 'rpo'
+            WHEN (
+                FIND_IN_SET('8', gs.services)>0 /* ats */
+                OR FIND_IN_SET('9', gs.services)>0 /* pro */
+                OR FIND_IN_SET('16', gs.services)>0 /* torre_os */
+            ) THEN 'torre_os'
+            WHEN (
+                (
+                 FIND_IN_SET('2', gs.services)>0 /* essentials */
+                 OR FIND_IN_SET('6', gs.services)>0 /* self service */
+                 OR services = ''
+                 OR services IS NULL
+                 )
+            ) THEN 'torre_free'
+            WHEN (
+                FIND_IN_SET('11', gs.services)>0 /* boost */
+                OR FIND_IN_SET('12', gs.services)>0 /* boost hqa */
+            ) THEN 'boost'
+            ELSE 'others'
+        END AS business_line,
+        (
+            FIND_IN_SET('17', gs.services)>0 /* torre_reach_essential */
+            OR FIND_IN_SET('18', gs.services)>0 /* torre_reach_syndication */
+            OR FIND_IN_SET('19', gs.services)>0 /* torre_reach_sourcing */
+        ) AS reach,
+        services
+    FROM
+        groupped_services gs
+        INNER JOIN opportunities o ON gs.opportunity_id=o.id
+), main_opps AS (
 SELECT
     -- ID
     o.id as 'ID',
@@ -10,10 +61,12 @@ SELECT
     (select group_concat(l.location) from opportunity_places l where l.opportunity_id = o.id and l.active = 1) as 'Location',
     -- timezones
     (select o.timezones having Location is null) as 'Timezones',
-    -- Type of service
-    o.fulfillment as 'Type of service',
     -- Type of job
     o.commitment_id as 'Type of job',
+    -- business_line,
+    IFNULL(os.business_line,'torre_free') AS business_line,
+    os.reach, 
+    os.services,
     -- Agreement type
     o.agreement_type as 'Agreement type',
     -- Opportunity details
@@ -23,12 +76,6 @@ SELECT
     -- Approved date
     coalesce(null, o.first_reviewed, o.last_reviewed) as 'Approved date',
     o.review as 'Approved',
-    -- Applicant Acquisition Coordinator
-    -- (select name FROM people p WHERE o.candidate_recruiter_person_id = p.id) as 'Candidate Recruiter',
-    -- DR 
-    -- #(select p.name from opportunity_members omp left join people p on omp.person_id = p.id where omp.tso_operator = TRUE and omp.opportunity_id = o.id and omp.active = true) as 'Ticket Owner',
-    -- Commited date
-    (select DATE(och.created) FROM opportunity_changes_history och WHERE och.opportunity_id = o.id group by opportunity_id ) as 'Commited date',
     -- Status
     o.status as 'Status',
     -- Reason
@@ -96,18 +143,17 @@ SELECT
     (select sharing_token from opportunity_members where manager = true and status = 'accepted' and opportunity_id =  o.id  limit 1) as 'Sharing token',
     -- Compensation
     (select GROUP_CONCAT(CONCAT(ifnull(opportunity_compensations.currency,'nan'),' ',ifnull(round(opportunity_compensations.min_amount,0),''),if(opportunity_compensations.code = 'range',' - ',''),ifnull(round(opportunity_compensations.max_amount,0),''),'/',ifnull(opportunity_compensations.periodicity,'nan'))) from opportunity_compensations where opportunity_compensations.active = true and opportunity_compensations.opportunity_id = o.id) as 'Compensation'
-
-
-FROM opportunities o 
-LEFT JOIN opportunity_candidates oc on o.id=oc.opportunity_id
-LEFT JOIN opportunity_columns oc2 on oc.column_id = oc2.id
-LEFT JOIN (
-    select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
-    from member_evaluations me
-    group by me.candidate_id) last_evaluation on last_evaluation.candidate_id = oc.id
-
-WHERE true
-    and o.id IN (
+FROM 
+    opportunities o 
+    LEFT JOIN opps_services os ON o.id = os.opportunity_id
+    LEFT JOIN opportunity_candidates oc on o.id=oc.opportunity_id
+    LEFT JOIN opportunity_columns oc2 on oc.column_id = oc2.id
+    LEFT JOIN (
+        select me.candidate_id, max(me.interested) as last_interest, max(me.not_interested) as last_not_interest
+        from member_evaluations me
+        group by me.candidate_id) last_evaluation on last_evaluation.candidate_id = oc.id
+WHERE
+    o.id IN (
         SELECT
             DISTINCT o.id AS opportunity_id
         FROM
@@ -118,12 +164,14 @@ WHERE true
             AND pf.opportunity_crawler = false
             and o.review = 'approved'
             and o.status <> 'opening-soon'
-            )
+    )
     AND o.Objective not like '**%'
     AND DATE(o.last_reviewed) > date(date_add(now(6), INTERVAL -1 year))
     AND o.active = TRUE
     AND o.crawled = FALSE 
     AND o.published = TRUE
-
-GROUP BY o.id
-ORDER BY o.created desc;
+GROUP BY 
+    o.id
+ORDER BY 
+    o.created desc
+) SELECT * FROM main_opps;
