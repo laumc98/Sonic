@@ -119,5 +119,6 @@ FROM
     ) thvtat ON o.ref_id = thvtat.opportunity_reference_id
 WHERE
     JSON_EXTRACT(o.opportunity_snapshot, '$."crawled"') = FALSE
+    AND (opportunity.created >= STR_TO_DATE(CONCAT(DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL -12 month), '%Y-%m'), '-01'), '%Y-%m-%d'))
 GROUP BY
     o.ref_id
