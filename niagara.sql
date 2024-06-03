@@ -43,8 +43,6 @@ FROM
             MAX(CASE WHEN channel = 'PAID_EXTERNAL_NETWORK' THEN created END) AS 'max_paid_syn_activation_date'
         FROM
             opportunity_channels
-        WHERE
-            opportunity_channels.source = 'NIAGARA'
         GROUP BY
             opportunity_reference_id
     ) activation ON o.ref_id = activation.opportunity_reference_id
